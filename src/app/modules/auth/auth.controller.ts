@@ -27,7 +27,7 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @Post('register')
   register(@Body() body: RegisterDTO): Promise<RegisterDTO> {
-    const role = Role.ADMIN;
+    const role = Role.USER;
     return this.authService.register(body, role);
   }
 

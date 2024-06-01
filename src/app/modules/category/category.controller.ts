@@ -13,6 +13,9 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { AuthenticationGuard } from 'src/app/common/guards/authentication.guard';
+import { Roles } from 'src/app/common/decorators';
+import { Role } from '../auth/enums/role.enum';
+import { AuthorizationGuard } from 'src/app/common/guards/authorization.guard';
 
 @Controller('category')
 export class CategoryController {
@@ -29,7 +32,8 @@ export class CategoryController {
     return await this.categoryService.findAll();
   }
 
-  @UseGuards(AuthenticationGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<Category> {
     return await this.categoryService.findOne(id);
