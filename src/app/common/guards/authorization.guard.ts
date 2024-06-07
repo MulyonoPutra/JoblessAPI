@@ -27,7 +27,7 @@ export class AuthorizationGuard implements CanActivate {
     const userRole = request.user.role as JsonWebToken;
     if (requiredRole !== userRole) {
       throw new HttpException(
-        'Unauthorized! Only Admin can access this resource',
+        `Unauthorized! Only ${requiredRole} can access this resource`,
         HttpStatus.UNAUTHORIZED,
       );
     }

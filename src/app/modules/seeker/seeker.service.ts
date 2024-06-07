@@ -10,10 +10,11 @@ import { CreateEducationDto } from './dto/create-education.dto';
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { CreateSavedJobsDto } from './dto/create-saved-jobs.dto';
 import { CreateSeekerDto } from './dto/create-seeker.dto';
+import { CreateSkillDto } from './dto/create-skill.dto';
 import { PrismaService } from 'src/app/prisma/prisma.service';
+import { SeekerEntity } from './entities/seeker.entity';
 import { UpdateEducationDto } from './dto/update-education.dto';
 import { UpdateSeekerDto } from './dto/update-seeker.dto';
-import { SeekerEntity } from './entities/seeker.entity';
 
 @Injectable()
 export class SeekerService {
@@ -62,6 +63,12 @@ export class SeekerService {
         education: educationSelection(),
         experience: experienceSelection(),
         user: userSelection(),
+        skills: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         savedJobs: {
           select: {
             id: true,
@@ -109,6 +116,12 @@ export class SeekerService {
         summary: true,
         education: true,
         experience: true,
+        skills: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         user: {
           select: {
             id: true,
@@ -184,6 +197,14 @@ export class SeekerService {
     return await this.prismaService.education.delete({
       where: { id },
     });
+  }
+
+  async newSkills(data: CreateSkillDto[]): Promise<CreateSkillDto[]> {
+    await this.prismaService.skill.createMany({
+      data,
+    });
+
+    return data;
   }
 
   async newExperience(createExperienceDto: CreateExperienceDto[]) {

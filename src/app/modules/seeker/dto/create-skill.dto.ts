@@ -1,4 +1,4 @@
-export interface CreateSkillDto {
+export class CreateSkillDto {
   seekerId: string;
   name: string;
 }
