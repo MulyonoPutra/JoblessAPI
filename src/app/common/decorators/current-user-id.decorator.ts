@@ -6,6 +6,6 @@ export const CurrentUserId = createParamDecorator(
   (_: undefined, context: ExecutionContext): string => {
     const request = context.switchToHttp().getRequest();
     const user = request.user as JsonWebToken;
-    return user.sub;
+    return user?.sub;
   },
 );

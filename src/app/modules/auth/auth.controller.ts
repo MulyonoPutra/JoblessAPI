@@ -27,16 +27,16 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @Post('register')
   register(@Body() body: RegisterDTO): Promise<RegisterDTO> {
-    const role = Role.USER;
+    const role = Role.SEEKER;
     return this.authService.register(body, role);
   }
 
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(ValidationPipe)
-  @Post('register/admin')
-  registerAdmin(@Body() body: RegisterDTO): Promise<RegisterDTO> {
-    const role = Role.ADMIN;
+  @Post('register/employer')
+  registerAsEmployer(@Body() body: RegisterDTO): Promise<RegisterDTO> {
+    const role = Role.EMPLOYER;
     return this.authService.register(body, role);
   }
 

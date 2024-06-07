@@ -21,12 +21,12 @@ import { AuthorizationGuard } from 'src/app/common/guards/authorization.guard';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @UseGuards(AuthenticationGuard)
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
   }
 
-  @UseGuards(AuthenticationGuard)
   @Get()
   async findAll(): Promise<Category[]> {
     return await this.categoryService.findAll();
