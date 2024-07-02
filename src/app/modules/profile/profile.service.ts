@@ -52,6 +52,7 @@ export class ProfileService {
         phone: true,
         role: true,
         createdAt: true,
+        seeker: true,
       },
     });
   }
@@ -69,6 +70,7 @@ export class ProfileService {
         phone: true,
         role: true,
         createdAt: true,
+        seeker: true,
       },
     });
   }

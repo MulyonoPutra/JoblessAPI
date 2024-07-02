@@ -1,0 +1,106 @@
+{
+    "message": "Successfully",
+    "data": [
+        {
+            "id": "0dc72c41-f35a-4c62-a43a-0afcaae1c248",
+            "companyName": "SALT",
+            "industry": "IT",
+            "contactInfo": "021-202-202-202",
+            "jobAds": [],
+            "user": {
+                "id": "26a97957-e9d3-4c1a-866a-89168ce8414c",
+                "name": "Employer",
+                "email": "employer@gmail.com",
+                "avatar": null,
+                "phone": null,
+                "role": "employer"
+            }
+        },
+        {
+            "id": "f07d953f-14cb-430a-820c-fa6f7b1876a0",
+            "companyName": "Sofco",
+            "industry": "IT",
+            "contactInfo": "021-202-202-02",
+            "jobAds": [
+                {
+                    "title": "Frontend Developer",
+                    "description": "description of Frontend",
+                    "requirements": "requirements of Frontend",
+                    "salary": 8000000,
+                    "applications": [
+                        {
+                            "id": "0408fbb8-ecba-41c4-a088-84c042dfec2b",
+                            "date": "2011-11-22T08:55:11.781Z",
+                            "status": "Applied",
+                            "jobSeeker": {
+                                "id": "f64c402f-3033-49df-be3e-d2a221f944a5",
+                                "birthday": "1994-27-01",
+                                "summary": "Experienced in Web, Quality Assurance and Mobile Engineer",
+                                "user": {
+                                    "id": "874bb422-f1b6-460d-a3eb-40aa4c4b231f",
+                                    "name": "Mulyono Putra",
+                                    "email": "mulyonoputra@gmail.com",
+                                    "avatar": null,
+                                    "phone": null,
+                                    "role": "seeker"
+                                },
+                                "experience": [
+                                    {
+                                        "id": "a6873446-55af-423f-916d-25167d391381",
+                                        "startDate": "2023-07-22T08:55:11.781Z",
+                                        "endDate": "2023-08-22T08:55:11.781Z",
+                                        "location": "DKI Jakarta",
+                                        "position": "Frontend Web Developer",
+                                        "companyName": "PT. Sofco Graha",
+                                        "responsibilities": "Slicing and integration API",
+                                        "seekerId": "f64c402f-3033-49df-be3e-d2a221f944a5"
+                                    }
+                                ],
+                                "education": [
+                                    {
+                                        "id": "ad69b068-cb1b-4fa2-afa1-45ce5aa99c93",
+                                        "startDate": "2011-11-22T08:55:11.781Z",
+                                        "endDate": "2016-05-22T08:55:11.781Z",
+                                        "title": "Junior High School",
+                                        "institution": "SMPN 2 Cibadak, Cibadak, Kab. Sukabumi",
+                                        "description": "Completed Junior High School",
+                                        "GPA": 3.03,
+                                        "seekerId": "f64c402f-3033-49df-be3e-d2a221f944a5"
+                                    },
+                                    {
+                                        "id": "d31eb686-f8c6-4642-9ce2-bebc28753739",
+                                        "startDate": "2011-11-22T08:55:11.781Z",
+                                        "endDate": "2016-05-22T08:55:11.781Z",
+                                        "title": "Bachelor Degree of Information System, Computer Science",
+                                        "institution": "Gunadarma University",
+                                        "description": "Completed Bachelor Degree in Information System, Computer Science with a GPA of 3.03 out of 4.0",
+                                        "GPA": 3.03,
+                                        "seekerId": "f64c402f-3033-49df-be3e-d2a221f944a5"
+                                    },
+                                    {
+                                        "id": "fc3f47b5-8dca-4999-be30-5a3162fe7b3f",
+                                        "startDate": "2011-11-22T08:55:11.781Z",
+                                        "endDate": "2016-05-22T08:55:11.781Z",
+                                        "title": "Senior High School",
+                                        "institution": "Teknika",
+                                        "description": "Completed Senior High School in Automotive Engineering",
+                                        "GPA": 3.03,
+                                        "seekerId": "f64c402f-3033-49df-be3e-d2a221f944a5"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "user": {
+                "id": "6cc838a7-bcb3-40b5-91f5-1ccbb6272e05",
+                "name": "Bara Sadboy",
+                "email": "bara@gmail.com",
+                "avatar": null,
+                "phone": null,
+                "role": "employer"
+            }
+        }
+    ]
+}

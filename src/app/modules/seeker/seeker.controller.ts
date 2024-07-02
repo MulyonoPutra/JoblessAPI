@@ -143,4 +143,28 @@ export class SeekerController {
   ): Promise<CreateSkillDto[]> {
     return this.seekerService.newSkills(createSkillsDto);
   }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Delete('saved-jobs/:id')
+  removeJobAds(@Param('id') id: string) {
+    return this.seekerService.removeJobAds(id);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Get('saved-jobs/:id')
+  findAllSavedJobs(@Param('id') id: string) {
+    return this.seekerService.findSavedJobsBySeekerId(id);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Get('application/:id')
+  findAllApplication(@Param('id') id: string) {
+    return this.seekerService.findApplicationBySeekerId(id);
+  }
 }

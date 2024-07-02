@@ -1,0 +1,31 @@
+{
+    "company": {
+        "id": "f07d953f-14cb-",
+        "name": "PT Freeport Indonesia ",
+        "logo": "",
+        "website": "freeport.com",
+        "industry": "Mining, Minerals & Metals",
+        "size": 1000,
+        "location": "Papua",
+        "description": "Merupakan perusahaan afiliasi dari Freeport-McMoRan. PTFI menambang, memproses dan melakukan eksplorasi terhadap bijih yang mengandung tembaga, emas dan perak. ",
+        "benefit": "Miscellaneous allowance, Medicals, Dental, etc"
+    },
+    "address": {
+        "id": "123",
+        "street": "",
+        "provinces": "",
+        "regencies": "",
+        "districts": "",
+        "villages": "",
+        "postCode": ""
+    },
+    "user": {
+        "id": "6cc838a7-bcb3-40b5-91f5-1ccbb6272e05",
+        "name": "Bara Sadboy",
+        "email": "bara@gmail.com",
+        "avatar": null,
+        "phone": null,
+        "role": "employer",
+        "addressId": "6cc838a7asdsa"
+    }
+}

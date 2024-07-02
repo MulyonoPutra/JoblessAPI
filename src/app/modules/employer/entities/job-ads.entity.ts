@@ -6,5 +6,5 @@ export class JobAdsEntity {
   description: string;
   requirements: string;
   salary: number;
-  employer: EmployerEntity;
+  employer?: EmployerEntity;
 }

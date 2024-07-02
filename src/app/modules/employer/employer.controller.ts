@@ -1,29 +1,30 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
-  HttpCode,
-  HttpStatus,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UploadedFile,
 } from '@nestjs/common';
-import { EmployerService } from './employer.service';
+import {
+  CurrentUserId,
+  EmployerDecorator,
+  UploadLogoDecorator,
+} from 'src/app/common/decorators';
+import { CreateAddressDto } from './dto/create-address.dto';
+import { CreateCompanyDto } from './dto/create-company.dto';
 import { CreateEmployerDto } from './dto/create-employer.dto';
-import { CurrentUserId, Roles } from 'src/app/common/decorators';
-import { AuthenticationGuard } from 'src/app/common/guards/authentication.guard';
 import { CreateJobAdsDto } from './dto/create-job-ads.dto';
-import { AuthorizationGuard } from 'src/app/common/guards/authorization.guard';
-import { Role } from '../auth/enums/role.enum';
+import { UpdateEmployerDto } from './dto/update-employer.dto';
+import { EmployerService } from './employer.service';
 
 @Controller('employer')
 export class EmployerController {
   constructor(private readonly employerService: EmployerService) {}
 
-  @Roles(Role.EMPLOYER)
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @EmployerDecorator()
   @Post()
   create(
     @Body() createEmployerDto: CreateEmployerDto,
@@ -32,36 +33,62 @@ export class EmployerController {
     return this.employerService.create(createEmployerDto, userId);
   }
 
-  @Roles(Role.EMPLOYER)
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @EmployerDecorator()
   @Get()
   findAll() {
     return this.employerService.findAll();
   }
 
-  @Roles(Role.EMPLOYER)
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @EmployerDecorator()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.employerService.findOne(id);
   }
 
-  @Roles(Role.EMPLOYER)
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthenticationGuard, AuthorizationGuard)
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.employerService.remove(+id);
+  @EmployerDecorator()
+  @Patch(':id')
+  updateEmployer(
+    @Body() updateEmployerDto: UpdateEmployerDto,
+    @Param('id') seekerId: string,
+  ) {
+    return this.employerService.update(seekerId, updateEmployerDto);
   }
 
-  @Roles(Role.EMPLOYER)
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthenticationGuard, AuthorizationGuard)
-  @UseGuards(AuthenticationGuard)
+  @EmployerDecorator()
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.employerService.removeJobAds(id);
+  }
+
+  @EmployerDecorator()
   @Post('job-ads')
   createJobAds(@Body() createJobAdsDto: CreateJobAdsDto[]) {
     return this.employerService.createJobAds(createJobAdsDto);
+  }
+
+  @EmployerDecorator()
+  @Post('company')
+  createCompany(@Body() createCompanyDto: CreateCompanyDto) {
+    return this.employerService.createCompany(createCompanyDto);
+  }
+
+  @EmployerDecorator()
+  @Post('address')
+  createAddress(@Body() createAddressDto: CreateAddressDto) {
+    return this.employerService.createAddress(createAddressDto);
+  }
+
+  @UploadLogoDecorator()
+  async upload(
+    @Param('id') companyId: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.employerService.uploadLogo(companyId, file);
+  }
+
+  @EmployerDecorator()
+  @Get('job-ads')
+  findAllJobAds() {
+    return this.employerService.findAllJobAds();
   }
 }

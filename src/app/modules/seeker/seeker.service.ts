@@ -38,23 +38,14 @@ export class SeekerService {
       where: { id: seekerId },
       select: {
         id: true,
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            phone: true,
-            role: true,
-          },
-        },
+        user: userSelection(),
         birthday: true,
         summary: true,
       },
     });
   }
 
-  async findAll(): Promise<SeekerEntity[]> {
+  async findAll() {
     return await this.prismaService.seeker.findMany({
       select: {
         id: true,
@@ -93,7 +84,14 @@ export class SeekerService {
                 description: true,
                 requirements: true,
                 salary: true,
-                employer: true,
+                employer: {
+                  select: {
+                    id: true,
+                    accountName: true,
+                    company: true,
+                  },
+                },
+                createdAt: true,
               },
             },
             id: true,
@@ -105,7 +103,7 @@ export class SeekerService {
     });
   }
 
-  async findOne(id: string): Promise<SeekerEntity> {
+  async findOne(id: string) {
     const seeker = await this.prismaService.seeker.findFirst({
       where: {
         id,
@@ -122,16 +120,7 @@ export class SeekerService {
             name: true,
           },
         },
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            phone: true,
-            role: true,
-          },
-        },
+        user: userSelection(),
         savedJobs: {
           select: {
             id: true,
@@ -142,7 +131,14 @@ export class SeekerService {
                 description: true,
                 requirements: true,
                 salary: true,
-                employer: true,
+                employer: {
+                  select: {
+                    id: true,
+                    accountName: true,
+                    company: true,
+                  },
+                },
+                createdAt: true,
               },
             },
           },
@@ -156,7 +152,13 @@ export class SeekerService {
                 description: true,
                 requirements: true,
                 salary: true,
-                employer: true,
+                employer: {
+                  select: {
+                    id: true,
+                    accountName: true,
+                    company: true,
+                  },
+                },
               },
             },
             id: true,
@@ -236,5 +238,33 @@ export class SeekerService {
     return await this.prismaService.savedJobs.createMany({
       data: createSavedJobsDto,
     });
+  }
+
+  async removeJobAds(id: string) {
+    return await this.prismaService.savedJobs.delete({
+      where: { id },
+    });
+  }
+
+  async findSavedJobsBySeekerId(seekerId: string) {
+    const savedJobs = await this.prismaService.savedJobs.findMany({
+      where: { seekerId },
+      include: {
+        jobAds: true,
+      },
+    });
+
+    return savedJobs.map((savedJob) => savedJob.jobAds);
+  }
+
+  async findApplicationBySeekerId(seekerId: string) {
+    const applications = await this.prismaService.application.findMany({
+      where: { seekerId },
+      include: {
+        jobAds: true,
+      },
+    });
+
+    return applications;
   }
 }

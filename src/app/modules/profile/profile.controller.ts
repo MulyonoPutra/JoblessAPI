@@ -24,7 +24,7 @@ import { Role } from '../auth/enums/role.enum';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
-  @Roles(Role.ADMIN)
+  @Roles(Role.SEEKER)
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @UsePipes(ValidationPipe)
@@ -33,13 +33,13 @@ export class ProfileController {
     return this.profileService.findAll();
   }
 
-  @Roles(Role.ADMIN)
+  @Roles(Role.SEEKER)
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @UsePipes(ValidationPipe)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.profileService.findOne(id);
+  @Get('detail')
+  findOne(@CurrentUserId() userId: string) {
+    return this.profileService.findOne(userId);
   }
 
   @UseGuards(AuthenticationGuard)

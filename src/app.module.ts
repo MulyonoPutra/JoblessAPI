@@ -3,8 +3,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './app/modules/auth/auth.module';
 import { CategoryModule } from './app/modules/category/category.module';
 import { CloudinaryModule } from './app/cloudinary/cloudinary.module';
+import { CompanyModule } from './app/modules/company/company.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmployerModule } from './app/modules/employer/employer.module';
+import { JobAdsModule } from './app/modules/job-ads/job-ads.module';
 import { Module } from '@nestjs/common';
 import { PrismaModule } from './app/prisma/prisma.module';
 import { ProfileModule } from './app/modules/profile/profile.module';
@@ -14,6 +16,8 @@ import { join } from 'path';
 
 @Module({
   imports: [
+    CompanyModule,
+    JobAdsModule,
     ProfileModule,
     EmployerModule,
     SeekerModule,
