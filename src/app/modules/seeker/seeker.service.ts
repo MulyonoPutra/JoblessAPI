@@ -250,7 +250,21 @@ export class SeekerService {
     const savedJobs = await this.prismaService.savedJobs.findMany({
       where: { seekerId },
       include: {
-        jobAds: true,
+        jobAds: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            requirements: true,
+            salary: true,
+            employer: {
+              select: {
+                company: true,
+              },
+            },
+            createdAt: true,
+          },
+        },
       },
     });
 
@@ -261,7 +275,21 @@ export class SeekerService {
     const applications = await this.prismaService.application.findMany({
       where: { seekerId },
       include: {
-        jobAds: true,
+        jobAds: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            requirements: true,
+            salary: true,
+            employer: {
+              select: {
+                company: true,
+              },
+            },
+            createdAt: true,
+          },
+        },
       },
     });
 
