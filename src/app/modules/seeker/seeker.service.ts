@@ -240,6 +240,12 @@ export class SeekerService {
     });
   }
 
+  async removeSavedJobs(id: string) {
+    return await this.prismaService.savedJobs.delete({
+      where: { id },
+    });
+  }
+
   async createApplication(createApplicationDto: CreateApplicationDto[]) {
     return await this.prismaService.application.createMany({
       data: createApplicationDto,
@@ -274,7 +280,10 @@ export class SeekerService {
       },
     });
 
-    return savedJobs.map((savedJob) => savedJob.jobAds);
+    return savedJobs.map((savedJob) => ({
+      id: savedJob.id,
+      jobAds: savedJob.jobAds,
+    }));
   }
 
   async findApplicationBySeekerId(seekerId: string) {

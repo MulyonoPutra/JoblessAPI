@@ -108,7 +108,7 @@ export class SeekerController {
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Delete('experience/:id')
   removeExperience(@Param('id') id: string) {
-    return this.seekerService.removeEducation(id);
+    return this.seekerService.removeExperience(id);
   }
 
   @Roles(Role.SEEKER)
@@ -170,6 +170,14 @@ export class SeekerController {
   @Get('saved-jobs/:id')
   findAllSavedJobs(@Param('id') id: string) {
     return this.seekerService.findSavedJobsBySeekerId(id);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Delete('saved-jobs/:id')
+  removeSavedJobs(@Param('id') id: string) {
+    return this.seekerService.removeSavedJobs(id);
   }
 
   @Roles(Role.SEEKER)
