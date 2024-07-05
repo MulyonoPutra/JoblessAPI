@@ -1,124 +1,124 @@
 {
-    "message": "Successfully",
-    "data": [
+  "message": "Successfully",
+  "data": [
+    {
+      "id": "f64c402f-3033-49df-be3e-d2a221f944a5",
+      "birthday": "1994-27-01",
+      "summary": "Experienced in Web, Quality Assurance and Mobile Engineer",
+      "education": [
         {
-            "id": "f64c402f-3033-49df-be3e-d2a221f944a5",
-            "birthday": "1994-27-01",
-            "summary": "Experienced in Web, Quality Assurance and Mobile Engineer",
-            "education": [
-                {
-                    "id": "ad69b068-cb1b-4fa2-afa1-45ce5aa99c93",
-                    "startDate": "2011-11-22T08:55:11.781Z",
-                    "endDate": "2016-05-22T08:55:11.781Z",
-                    "title": "Junior High School",
-                    "institution": "SMPN 2 Cibadak, Cibadak, Kab. Sukabumi",
-                    "description": "Completed Junior High School",
-                    "GPA": 3.03
-                },
-                {
-                    "id": "d31eb686-f8c6-4642-9ce2-bebc28753739",
-                    "startDate": "2011-11-22T08:55:11.781Z",
-                    "endDate": "2016-05-22T08:55:11.781Z",
-                    "title": "Bachelor Degree of Information System, Computer Science",
-                    "institution": "Gunadarma University",
-                    "description": "Completed Bachelor Degree in Information System, Computer Science with a GPA of 3.03 out of 4.0",
-                    "GPA": 3.03
-                },
-                {
-                    "id": "fc3f47b5-8dca-4999-be30-5a3162fe7b3f",
-                    "startDate": "2011-11-22T08:55:11.781Z",
-                    "endDate": "2016-05-22T08:55:11.781Z",
-                    "title": "Senior High School",
-                    "institution": "Teknika",
-                    "description": "Completed Senior High School in Automotive Engineering",
-                    "GPA": 3.03
-                }
-            ],
-            "experience": [
-                {
-                    "id": "a6873446-55af-423f-916d-25167d391381",
-                    "startDate": "2023-07-22T08:55:11.781Z",
-                    "endDate": "2023-08-22T08:55:11.781Z",
-                    "location": "DKI Jakarta",
-                    "position": "Frontend Web Developer",
-                    "companyName": "PT. Sofco Graha",
-                    "responsibilities": "Slicing and integration API"
-                }
-            ],
-            "user": {
-                "id": "874bb422-f1b6-460d-a3eb-40aa4c4b231f",
-                "name": "Mulyono Putra",
-                "email": "mulyonoputra@gmail.com",
-                "avatar": null,
-                "phone": null,
-                "role": "seeker"
-            },
-            "skills": [
-                {
-                    "id": "11f9b3ba-c7cd-4545-ae31-8bf9ec113d13",
-                    "name": "CSS"
-                },
-                {
-                    "id": "1e2bec74-e47f-4421-8dc8-7369a9c204c9",
-                    "name": "Tailwind CSS"
-                },
-                {
-                    "id": "58f26660-7e50-4679-af97-4389f8881564",
-                    "name": "Javascript"
-                },
-                {
-                    "id": "625c8b79-984f-4ed3-b67b-2850166a5e55",
-                    "name": "React"
-                },
-                {
-                    "id": "a35d8a1b-d782-4d0f-99fc-88f8cceab974",
-                    "name": "Angular"
-                },
-                {
-                    "id": "ed5520b7-2f0a-42ff-9586-be5b80918b4b",
-                    "name": "HTML"
-                }
-            ],
-            "savedJobs": [
-                {
-                    "id": "60e32b8c-e03b-44c0-a777-afc2c8f8a6ae",
-                    "jobAds": {
-                        "id": "8be297bf-efda-4ce8-b64e-569ebd2f7f8b",
-                        "title": "Frontend Developer",
-                        "description": "description of Frontend",
-                        "requirements": "requirements of Frontend",
-                        "salary": 8000000,
-                        "employer": {
-                            "id": "f07d953f-14cb-430a-820c-fa6f7b1876a0",
-                            "userId": "6cc838a7-bcb3-40b5-91f5-1ccbb6272e05",
-                            "companyName": "Sofco",
-                            "industry": "IT",
-                            "contactInfo": "021-202-202-02"
-                        }
-                    }
-                }
-            ],
-            "Application": [
-                {
-                    "jobAds": {
-                        "id": "8be297bf-efda-4ce8-b64e-569ebd2f7f8b",
-                        "title": "Frontend Developer",
-                        "description": "description of Frontend",
-                        "requirements": "requirements of Frontend",
-                        "salary": 8000000,
-                        "employer": {
-                            "id": "f07d953f-14cb-430a-820c-fa6f7b1876a0",
-                            "userId": "6cc838a7-bcb3-40b5-91f5-1ccbb6272e05",
-                            "companyName": "Sofco",
-                            "industry": "IT",
-                            "contactInfo": "021-202-202-02"
-                        }
-                    },
-                    "id": "0408fbb8-ecba-41c4-a088-84c042dfec2b",
-                    "status": "Applied",
-                    "date": "2011-11-22T08:55:11.781Z"
-                }
-            ]
+          "id": "ad69b068-cb1b-4fa2-afa1-45ce5aa99c93",
+          "startDate": "2011-11-22T08:55:11.781Z",
+          "endDate": "2016-05-22T08:55:11.781Z",
+          "title": "Junior High School",
+          "institution": "SMPN 2 Cibadak, Cibadak, Kab. Sukabumi",
+          "description": "Completed Junior High School",
+          "GPA": 3.03
+        },
+        {
+          "id": "d31eb686-f8c6-4642-9ce2-bebc28753739",
+          "startDate": "2011-11-22T08:55:11.781Z",
+          "endDate": "2016-05-22T08:55:11.781Z",
+          "title": "Bachelor Degree of Information System, Computer Science",
+          "institution": "Gunadarma University",
+          "description": "Completed Bachelor Degree in Information System, Computer Science with a GPA of 3.03 out of 4.0",
+          "GPA": 3.03
+        },
+        {
+          "id": "fc3f47b5-8dca-4999-be30-5a3162fe7b3f",
+          "startDate": "2011-11-22T08:55:11.781Z",
+          "endDate": "2016-05-22T08:55:11.781Z",
+          "title": "Senior High School",
+          "institution": "Teknika",
+          "description": "Completed Senior High School in Automotive Engineering",
+          "GPA": 3.03
         }
-    ]
+      ],
+      "experience": [
+        {
+          "id": "a6873446-55af-423f-916d-25167d391381",
+          "startDate": "2023-07-22T08:55:11.781Z",
+          "endDate": "2023-08-22T08:55:11.781Z",
+          "location": "DKI Jakarta",
+          "position": "Frontend Web Developer",
+          "companyName": "PT. Sofco Graha",
+          "responsibilities": "Slicing and integration API"
+        }
+      ],
+      "user": {
+        "id": "874bb422-f1b6-460d-a3eb-40aa4c4b231f",
+        "name": "Mulyono Putra",
+        "email": "mulyonoputra@gmail.com",
+        "avatar": null,
+        "phone": null,
+        "role": "seeker"
+      },
+      "skills": [
+        {
+          "id": "11f9b3ba-c7cd-4545-ae31-8bf9ec113d13",
+          "name": "CSS"
+        },
+        {
+          "id": "1e2bec74-e47f-4421-8dc8-7369a9c204c9",
+          "name": "Tailwind CSS"
+        },
+        {
+          "id": "58f26660-7e50-4679-af97-4389f8881564",
+          "name": "Javascript"
+        },
+        {
+          "id": "625c8b79-984f-4ed3-b67b-2850166a5e55",
+          "name": "React"
+        },
+        {
+          "id": "a35d8a1b-d782-4d0f-99fc-88f8cceab974",
+          "name": "Angular"
+        },
+        {
+          "id": "ed5520b7-2f0a-42ff-9586-be5b80918b4b",
+          "name": "HTML"
+        }
+      ],
+      "savedJobs": [
+        {
+          "id": "60e32b8c-e03b-44c0-a777-afc2c8f8a6ae",
+          "jobAds": {
+            "id": "8be297bf-efda-4ce8-b64e-569ebd2f7f8b",
+            "title": "Frontend Developer",
+            "description": "description of Frontend",
+            "requirements": "requirements of Frontend",
+            "salary": 8000000,
+            "employer": {
+              "id": "f07d953f-14cb-430a-820c-fa6f7b1876a0",
+              "userId": "6cc838a7-bcb3-40b5-91f5-1ccbb6272e05",
+              "companyName": "Sofco",
+              "industry": "IT",
+              "contactInfo": "021-202-202-02"
+            }
+          }
+        }
+      ],
+      "Application": [
+        {
+          "jobAds": {
+            "id": "8be297bf-efda-4ce8-b64e-569ebd2f7f8b",
+            "title": "Frontend Developer",
+            "description": "description of Frontend",
+            "requirements": "requirements of Frontend",
+            "salary": 8000000,
+            "employer": {
+              "id": "f07d953f-14cb-430a-820c-fa6f7b1876a0",
+              "userId": "6cc838a7-bcb3-40b5-91f5-1ccbb6272e05",
+              "companyName": "Sofco",
+              "industry": "IT",
+              "contactInfo": "021-202-202-02"
+            }
+          },
+          "id": "0408fbb8-ecba-41c4-a088-84c042dfec2b",
+          "status": "Applied",
+          "date": "2011-11-22T08:55:11.781Z"
+        }
+      ]
+    }
+  ]
 }

@@ -1,28 +1,29 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
-  Patch,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
-import { SeekerService } from './seeker.service';
-import { CreateSeekerDto } from './dto/create-seeker.dto';
-import { AuthenticationGuard } from 'src/app/common/guards/authentication.guard';
 import { CurrentUserId, Roles } from 'src/app/common/decorators';
-import { CreateEducationDto } from './dto/create-education.dto';
-import { CreateExperienceDto } from './dto/create-experience.dto';
-import { UpdateEducationDto } from './dto/update-education.dto';
-import { CreateApplicationDto } from './dto/create-application.dto';
-import { CreateSavedJobsDto } from './dto/create-saved-jobs.dto';
-import { UpdateSeekerDto } from './dto/update-seeker.dto';
-import { CreateSkillDto } from './dto/create-skill.dto';
+import { AuthenticationGuard } from 'src/app/common/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/app/common/guards/authorization.guard';
 import { Role } from '../auth/enums/role.enum';
+import { CreateApplicationDto } from './dto/create-application.dto';
+import { CreateEducationDto } from './dto/create-education.dto';
+import { CreateExperienceDto } from './dto/create-experience.dto';
+import { CreateSavedJobsDto } from './dto/create-saved-jobs.dto';
+import { CreateSeekerDto } from './dto/create-seeker.dto';
+import { CreateSkillDto } from './dto/create-skill.dto';
+import { UpdateEducationDto } from './dto/update-education.dto';
+import { UpdateSeekerDto } from './dto/update-seeker.dto';
+import { SeekerService } from './seeker.service';
+import { ExperienceEntity } from './entities/experience.entity';
 
 @Controller('seeker')
 export class SeekerController {
@@ -121,6 +122,25 @@ export class SeekerController {
   @Roles(Role.SEEKER)
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Patch('experience/:id')
+  updateExperience(
+    @Param('id') id: string,
+    @Body() updateExperienceDto: CreateExperienceDto,
+  ): Promise<ExperienceEntity> {
+    return this.seekerService.updateExperience(id, updateExperienceDto);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Get('experience/:id')
+  findExperienceById(@Param('id') id: string): Promise<ExperienceEntity> {
+    return this.seekerService.findExperienceById(id);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Post('application')
   createApplication(@Body() createApplicationDto: CreateApplicationDto[]) {
     return this.seekerService.createApplication(createApplicationDto);
@@ -142,14 +162,6 @@ export class SeekerController {
     @Body() createSkillsDto: CreateSkillDto[],
   ): Promise<CreateSkillDto[]> {
     return this.seekerService.newSkills(createSkillsDto);
-  }
-
-  @Roles(Role.SEEKER)
-  @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthenticationGuard, AuthorizationGuard)
-  @Delete('saved-jobs/:id')
-  removeJobAds(@Param('id') id: string) {
-    return this.seekerService.removeJobAds(id);
   }
 
   @Roles(Role.SEEKER)

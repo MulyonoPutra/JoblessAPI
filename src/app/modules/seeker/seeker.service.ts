@@ -11,6 +11,7 @@ import { CreateExperienceDto } from './dto/create-experience.dto';
 import { CreateSavedJobsDto } from './dto/create-saved-jobs.dto';
 import { CreateSeekerDto } from './dto/create-seeker.dto';
 import { CreateSkillDto } from './dto/create-skill.dto';
+import { ExperienceEntity } from './entities/experience.entity';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { SeekerEntity } from './entities/seeker.entity';
 import { UpdateEducationDto } from './dto/update-education.dto';
@@ -195,6 +196,14 @@ export class SeekerService {
     });
   }
 
+  async findExperienceById(id: string): Promise<ExperienceEntity> {
+    return await this.prismaService.experience.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
   async removeEducation(id: string) {
     return await this.prismaService.education.delete({
       where: { id },
@@ -215,7 +224,10 @@ export class SeekerService {
     });
   }
 
-  async updateExperience(id: string, updateExperienceDto: CreateExperienceDto) {
+  async updateExperience(
+    id: string,
+    updateExperienceDto: CreateExperienceDto,
+  ): Promise<ExperienceEntity> {
     return await this.prismaService.experience.update({
       data: updateExperienceDto,
       where: { id },
@@ -237,12 +249,6 @@ export class SeekerService {
   async createSavedJobs(createSavedJobsDto: CreateSavedJobsDto[]) {
     return await this.prismaService.savedJobs.createMany({
       data: createSavedJobsDto,
-    });
-  }
-
-  async removeJobAds(id: string) {
-    return await this.prismaService.savedJobs.delete({
-      where: { id },
     });
   }
 
