@@ -24,6 +24,7 @@ import { UpdateEducationDto } from './dto/update-education.dto';
 import { UpdateSeekerDto } from './dto/update-seeker.dto';
 import { SeekerService } from './seeker.service';
 import { ExperienceEntity } from './entities/experience.entity';
+import { EducationEntity } from './entities/education.entity';
 
 @Controller('seeker')
 export class SeekerController {
@@ -98,6 +99,14 @@ export class SeekerController {
   @Roles(Role.SEEKER)
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Get('education/:id')
+  findEducationById(@Param('id') id: string): Promise<EducationEntity> {
+    return this.seekerService.findEducationById(id);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Delete('education/:id')
   removeEducation(@Param('id') id: string) {
     return this.seekerService.removeEducation(id);
@@ -157,11 +166,28 @@ export class SeekerController {
   @Roles(Role.SEEKER)
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
-  @Post('skills')
-  createSkills(
+  @Post('skills/:id')
+  newSkills(
+    @Param('id') id: string,
     @Body() createSkillsDto: CreateSkillDto[],
   ): Promise<CreateSkillDto[]> {
-    return this.seekerService.newSkills(createSkillsDto);
+    return this.seekerService.createNewSkills(id, createSkillsDto);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Delete('skills/:id')
+  removeSkills(@Param('id') id: string): Promise<CreateSkillDto> {
+    return this.seekerService.removeSkills(id);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @Get('skills/:id')
+  findSkills(@Param('id') id: string) {
+    return this.seekerService.findSkillsBySeekerId(id);
   }
 
   @Roles(Role.SEEKER)

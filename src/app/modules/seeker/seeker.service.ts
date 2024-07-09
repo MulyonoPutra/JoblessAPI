@@ -11,6 +11,7 @@ import { CreateExperienceDto } from './dto/create-experience.dto';
 import { CreateSavedJobsDto } from './dto/create-saved-jobs.dto';
 import { CreateSeekerDto } from './dto/create-seeker.dto';
 import { CreateSkillDto } from './dto/create-skill.dto';
+import { EducationEntity } from './entities/education.entity';
 import { ExperienceEntity } from './entities/experience.entity';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { SeekerEntity } from './entities/seeker.entity';
@@ -189,7 +190,10 @@ export class SeekerService {
     });
   }
 
-  async updateEducation(id: string, updateEducationDto: UpdateEducationDto) {
+  async updateEducation(
+    id: string,
+    updateEducationDto: UpdateEducationDto,
+  ): Promise<EducationEntity> {
     return await this.prismaService.education.update({
       data: updateEducationDto,
       where: { id },
@@ -204,18 +208,18 @@ export class SeekerService {
     });
   }
 
+  async findEducationById(id: string): Promise<EducationEntity> {
+    return await this.prismaService.education.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
   async removeEducation(id: string) {
     return await this.prismaService.education.delete({
       where: { id },
     });
-  }
-
-  async newSkills(data: CreateSkillDto[]): Promise<CreateSkillDto[]> {
-    await this.prismaService.skill.createMany({
-      data,
-    });
-
-    return data;
   }
 
   async newExperience(createExperienceDto: CreateExperienceDto[]) {
@@ -284,6 +288,39 @@ export class SeekerService {
       id: savedJob.id,
       jobAds: savedJob.jobAds,
     }));
+  }
+
+  async findSkillsBySeekerId(seekerId: string) {
+    return await this.prismaService.skill.findMany({
+      where: { seekerId },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }
+
+  async createNewSkills(
+    id: string,
+    data: CreateSkillDto[],
+  ): Promise<CreateSkillDto[]> {
+    const skills = data.map((skill) => {
+      return {
+        ...skill,
+        seekerId: id,
+      };
+    });
+    const createdSkills = await this.prismaService.skill.createMany({
+      data: skills,
+    });
+
+    return createdSkills as unknown as CreateSkillDto[];
+  }
+
+  async removeSkills(id: string): Promise<CreateSkillDto> {
+    return await this.prismaService.skill.delete({
+      where: { id },
+    });
   }
 
   async findApplicationBySeekerId(seekerId: string) {
