@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   educationSelection,
   experienceSelection,
@@ -250,8 +255,14 @@ export class SeekerService {
     });
   }
 
-  async createApplication(createApplicationDto: CreateApplicationDto[]) {
-    return await this.prismaService.application.createMany({
+  async createApplication(createApplicationDto: CreateApplicationDto) {
+    // Check if the job ad exists
+    await this.onCheckJobAdsId(createApplicationDto);
+
+    // Check for existing application
+    await this.onCheckExistingApp(createApplicationDto);
+
+    return await this.prismaService.application.create({
       data: createApplicationDto,
     });
   }
@@ -346,5 +357,42 @@ export class SeekerService {
     });
 
     return applications;
+  }
+
+  private async onCheckJobAdsId(createApplicationDto: CreateApplicationDto) {
+    const jobAd = await this.prismaService.jobAds.findUnique({
+      where: {
+        id: createApplicationDto.jobAdsId,
+      },
+    });
+
+    if (!jobAd) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Job Advertisement ID is not found!',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  private async onCheckExistingApp(createApplicationDto: CreateApplicationDto) {
+    const existingApplication = await this.prismaService.application.findFirst({
+      where: {
+        jobAdsId: createApplicationDto.jobAdsId,
+        seekerId: createApplicationDto.seekerId,
+      },
+    });
+
+    if (existingApplication) {
+      throw new HttpException(
+        {
+          status: HttpStatus.CONFLICT,
+          error: 'You already applied to this application..',
+        },
+        HttpStatus.CONFLICT,
+      );
+    }
   }
 }

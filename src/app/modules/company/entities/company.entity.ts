@@ -28,4 +28,5 @@ export interface Address {
 
 export interface Employer {
   jobAds: JobAdsEntity[];
+  company?: Company;
 }

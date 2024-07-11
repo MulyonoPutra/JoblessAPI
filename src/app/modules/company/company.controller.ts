@@ -1,13 +1,14 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CompanyService } from './company.service';
+import { SearchCompanyDto } from './dto/search-company.dto';
 
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Get()
-  findAll() {
-    return this.companyService.findAll();
+  findAll(@Query() searchCompanyDto: SearchCompanyDto) {
+    return this.companyService.findOrSearch(searchCompanyDto);
   }
 
   @Get(':id')

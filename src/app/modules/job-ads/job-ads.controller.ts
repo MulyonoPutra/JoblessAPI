@@ -1,14 +1,15 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 
 import { JobAdsService } from './job-ads.service';
+import { SearchJobDto } from './dto/search-job.dto';
 
 @Controller('job-ads')
 export class JobAdsController {
   constructor(private readonly jobAdsService: JobAdsService) {}
 
   @Get()
-  findAll() {
-    return this.jobAdsService.findAll();
+  findAll(@Query() searchJobDto: SearchJobDto) {
+    return this.jobAdsService.findOrSearch(searchJobDto);
   }
 
   @Get(':id')

@@ -1,13 +1,63 @@
 import { Company } from './entities/company.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/app/prisma/prisma.service';
+import { SearchCompanyDto } from './dto/search-company.dto';
 
 @Injectable()
 export class CompanyService {
   constructor(private prismaService: PrismaService) {}
 
-  async findAll(): Promise<Company[]> {
-    return await this.prismaService.company.findMany({
+  async findOrSearch(searchCompanyDto: SearchCompanyDto): Promise<Company[]> {
+    const { query } = searchCompanyDto;
+    if (query) {
+      return this.search(query);
+    } else {
+      return await this.findAll();
+    }
+  }
+
+  private findAll() {
+    return this.prismaService.company.findMany({
+      select: {
+        id: true,
+        name: true,
+        logo: true,
+        website: true,
+        industry: true,
+        size: true,
+        location: true,
+        description: true,
+        benefit: true,
+        contactInfo: true,
+        address: true,
+        employer: {
+          select: {
+            jobAds: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                requirements: true,
+                salary: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  private search(query: string) {
+    return this.prismaService.company.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: query,
+            },
+          },
+        ],
+      },
       select: {
         id: true,
         name: true,
