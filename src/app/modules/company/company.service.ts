@@ -1,4 +1,3 @@
-import { Company } from './entities/company.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { SearchCompanyDto } from './dto/search-company.dto';
@@ -7,7 +6,7 @@ import { SearchCompanyDto } from './dto/search-company.dto';
 export class CompanyService {
   constructor(private prismaService: PrismaService) {}
 
-  async findOrSearch(searchCompanyDto: SearchCompanyDto): Promise<Company[]> {
+  async findOrSearch(searchCompanyDto: SearchCompanyDto): Promise<any> {
     const { query } = searchCompanyDto;
     if (query) {
       return this.search(query);
@@ -21,6 +20,7 @@ export class CompanyService {
       select: {
         id: true,
         name: true,
+        header: true,
         logo: true,
         website: true,
         industry: true,
@@ -87,7 +87,7 @@ export class CompanyService {
     });
   }
 
-  async findOne(id: string): Promise<Company> {
+  async findOne(id: string) {
     return await this.prismaService.company.findFirst({
       where: {
         id,

@@ -62,7 +62,7 @@ export class EmployerController {
 
   @EmployerDecorator()
   @Post('job-ads')
-  createJobAds(@Body() createJobAdsDto: CreateJobAdsDto[]) {
+  createJobAds(@Body() createJobAdsDto: CreateJobAdsDto) {
     return this.employerService.createJobAds(createJobAdsDto);
   }
 

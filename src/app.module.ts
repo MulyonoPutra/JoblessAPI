@@ -1,7 +1,6 @@
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './app/modules/auth/auth.module';
-import { CategoryModule } from './app/modules/category/category.module';
 import { CloudinaryModule } from './app/cloudinary/cloudinary.module';
 import { CompanyModule } from './app/modules/company/company.module';
 import { ConfigModule } from '@nestjs/config';
@@ -21,13 +20,17 @@ import { join } from 'path';
     ProfileModule,
     EmployerModule,
     SeekerModule,
-    CategoryModule,
     AuthModule,
     PrismaModule,
     ConfigModule.forRoot({ isGlobal: true }),
     CloudinaryModule,
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'public'),
+    // }),
+
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
     }),
   ],
   controllers: [AppController],

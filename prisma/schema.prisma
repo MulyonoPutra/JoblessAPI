@@ -16,7 +16,10 @@ model User {
   password     String?
   avatar       String?
   createdAt    DateTime  @default(now())
-  role         String?
+  updatedAt    DateTime  @updatedAt
+  role         String?      
+  birthday     String?
+  gender       String?
   refreshToken String?
   phone        String?
   seeker       Seeker?
@@ -24,18 +27,41 @@ model User {
 }
 
 model Seeker {
-  id          String        @id @default(uuid())
-  user        User?         @relation(fields: [userId], references: [id])
-  userId      String        @unique
-  birthday    String?
-  summary     String?       @db.Text
-  education   Education[]
-  experience  Experience[]
-  skills      Skill[]
-  Application Application[]
-  savedJobs   SavedJobs[]
+  id     String @id @default(uuid())
+  user   User?  @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  summary      String?       @db.Text
+  education    Education[]
+  experience   Experience[]
+  skills       Skill[]
+  Application  Application[]
+  savedJobs    SavedJobs[]
+  resume       String?
+  coverLetter  String?       @db.Text
+  links        Links[]
+  desireSalary String?
+  startDate    DateTime?
+  license      License[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
   @@index([userId])
+}
+
+model License {
+  id           String  @id @default(uuid())
+  name         String?
+  organization String?
+  description  String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  seekerId String
+  seeker   Seeker @relation(fields: [seekerId], references: [id])
+
+  @@index([seekerId])
 }
 
 model Skill {
@@ -44,19 +70,38 @@ model Skill {
   seekerId String
   seeker   Seeker @relation(fields: [seekerId], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([seekerId])
+}
+
+model Links {
+  id   String @id @default(uuid())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  seekerId String
+  seeker   Seeker @relation(fields: [seekerId], references: [id])
+
   @@index([seekerId])
 }
 
 model Education {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   startDate   String
   endDate     String
   title       String
   institution String
-  description String?
+  description String?  @db.Text
   GPA         Float?
+  
   seekerId    String
-  seeker      Seeker  @relation(fields: [seekerId], references: [id])
+  seeker      Seeker   @relation(fields: [seekerId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([seekerId])
 }
@@ -69,46 +114,62 @@ model Experience {
   position         String
   companyName      String
   responsibilities String @db.Text
-  seekerId         String
-  seeker           Seeker @relation(fields: [seekerId], references: [id])
+
+  seekerId  String
+  seeker    Seeker   @relation(fields: [seekerId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([seekerId])
 }
 
 model SavedJobs {
-  id       String @id @default(uuid())
-  seekerId String
-  seeker   Seeker @relation(fields: [seekerId], references: [id])
-  jobAds   JobAds @relation(fields: [jobAdsId], references: [id])
-  jobAdsId String
+  id         String   @id @default(uuid())
+  seekerId   String
+  seeker     Seeker   @relation(fields: [seekerId], references: [id])
+  jobAds     JobAds   @relation(fields: [jobAdsId], references: [id])
+  jobAdsId   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  isBookmark Boolean  @default(false)
 
   @@index([jobAdsId])
   @@index([seekerId])
 }
 
 model Employer {
-  id          String   @id @default(uuid())
-  user        User?    @relation(fields: [userId], references: [id])
-  userId      String?  @unique
-  accountName String?
-  jobAds      JobAds[]
-  company     Company?
+  id            String   @id @default(uuid())
+  user          User?    @relation(fields: [userId], references: [id])
+  userId        String?  @unique
+  accountName   String?
+  accountNumber String
+  jobAds        JobAds[]
+  company       Company?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@index([userId])
 }
 
 model JobAds {
-  id           String        @id @default(uuid())
+  id           String   @id @default(uuid())
   title        String
-  description  String
-  requirements String
-  salary       Float
-  employer     Employer      @relation(fields: [employerId], references: [id])
-  employerId   String
+  description  String   @db.Text
+  requirements String   @db.Text
+  salary       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  location     String?
+  workType     String
+  payType      String
+
+  employer   Employer @relation(fields: [employerId], references: [id])
+  employerId String
+
   applications Application[]
+
   savedJobsIds String?
   savedJobs    SavedJobs[]
-  createdAt    DateTime  @default(now())
 
   @@index([employerId])
 }
@@ -117,30 +178,34 @@ model Application {
   id        String   @id @default(uuid())
   date      DateTime @default(now())
   status    String
-  jobSeeker Seeker   @relation(fields: [seekerId], references: [id])
+  seeker    Seeker?  @relation(fields: [seekerId], references: [id])
   seekerId  String
   jobAds    JobAds   @relation(fields: [jobAdsId], references: [id])
   jobAdsId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([jobAdsId])
   @@index([seekerId])
 }
 
 model Company {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   logo        String?
+  header      String?
   website     String?
   industry    String?
   size        Int?
   location    String?
-  description String?
+  description String?   @db.Text
   benefit     String?
   contactInfo String
   address     Address?
-
-  employerId String?   @unique
-  employer   Employer? @relation(fields: [employerId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  employerId  String?   @unique
+  employer    Employer? @relation(fields: [employerId], references: [id])
 
   @@index([employerId])
 }
@@ -153,16 +218,11 @@ model Address {
   district  String?
   village   String?
   postCode  String?
+  
   companyId String?  @unique
   company   Company? @relation(fields: [companyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([companyId])
 }
-
-// Employer Account:
-// "email": "bara@gmail.com",
-// "password": "12345"
-
-// Seeker Account:
-// "email": "mulyonoputra@gmail.com",
-// "password": "12345"

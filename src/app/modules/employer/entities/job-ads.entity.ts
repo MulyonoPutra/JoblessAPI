@@ -5,6 +5,8 @@ export class JobAdsEntity {
   title: string;
   description: string;
   requirements: string;
+  workType: string;
+  payType: string;
   salary: number;
   employer?: EmployerEntity;
 }

@@ -10,4 +10,5 @@ export class Profile {
   phone: string;
   seeker?: any;
   employer?: any;
+  birthday?: string;
 }

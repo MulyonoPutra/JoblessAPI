@@ -4,28 +4,25 @@ import {
   ForbiddenException,
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
 } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { compare, hash } from 'bcrypt';
-import { RegisterDTO } from './dto/register.dto';
 import { AuthUtilityService } from './utils/auth-utility.service';
-import { LoginDTO } from './dto/login.dto';
 import { Credentials } from './types/credentials';
+import { LoginDTO } from './dto/login.dto';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/app/prisma/prisma.service';
+import { RegisterDTO } from './dto/register.dto';
+import { RegisterEntity } from './entities/register.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
     private utils: AuthUtilityService,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    @Inject(REQUEST) private request: any,
   ) {}
 
-  async register(data: RegisterDTO, role: string): Promise<RegisterDTO> {
+  async register(data: RegisterDTO, role: string): Promise<RegisterEntity> {
     const password = await hash(data.password, 12);
     const user = await this.prismaService.user
       .create({
@@ -45,7 +42,11 @@ export class AuthService {
         throw error;
       });
 
-    const tokens = await this.utils.getToken(user.id, user.email, user.role);
+    const tokens: Credentials = await this.utils.getToken(
+      user.id,
+      user.email,
+      user.role,
+    );
     await this.utils.updateHashRefreshToken(user.id, tokens.refreshToken);
 
     return data;
@@ -62,7 +63,10 @@ export class AuthService {
       throw new HttpException('User not found!', HttpStatus.NOT_FOUND);
     }
 
-    const passwordMatches = await compare(data.password, user.password);
+    const passwordMatches: boolean = await compare(
+      data.password,
+      user.password,
+    );
     if (!passwordMatches) {
       throw new HttpException(
         'Invalid email or password!',

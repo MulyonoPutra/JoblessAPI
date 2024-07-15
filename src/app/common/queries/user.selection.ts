@@ -7,6 +7,7 @@ export const userSelection = () => {
       avatar: true,
       phone: true,
       role: true,
+      birthday: true,
     },
   };
 };

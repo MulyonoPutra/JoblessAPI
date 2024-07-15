@@ -7,7 +7,7 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post,
+  Post, UploadedFile,
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUserId, Roles } from 'src/app/common/decorators';
@@ -25,6 +25,8 @@ import { UpdateSeekerDto } from './dto/update-seeker.dto';
 import { SeekerService } from './seeker.service';
 import { ExperienceEntity } from './entities/experience.entity';
 import { EducationEntity } from './entities/education.entity';
+import { HttpCreated } from 'src/app/common/domain/http-created';
+import {UploadFileDecorator} from "../../common/decorators/upload-file.decorator";
 
 @Controller('seeker')
 export class SeekerController {
@@ -37,7 +39,7 @@ export class SeekerController {
   create(
     @Body() createSeekerDto: CreateSeekerDto,
     @CurrentUserId() userId: string,
-  ) {
+  ): Promise<HttpCreated> {
     return this.seekerService.create(createSeekerDto, userId);
   }
 
@@ -212,5 +214,14 @@ export class SeekerController {
   @Get('application/:id')
   findAllApplication(@Param('id') id: string) {
     return this.seekerService.findApplicationBySeekerId(id);
+  }
+
+  @Roles(Role.SEEKER)
+  @HttpCode(HttpStatus.OK)
+  @Post('upload')
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
+  @UploadFileDecorator()
+  uploadResume(@CurrentUserId() userId: string, @UploadedFile() file: Express.Multer.File) {
+    return this.seekerService.uploadResume(userId, file)
   }
 }

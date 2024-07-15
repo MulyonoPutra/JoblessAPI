@@ -17,6 +17,7 @@ import { Role } from './enums/role.enum';
 import { CurrentUserId, CurrentUser, Public } from 'src/app/common/decorators';
 import { AuthenticationGuard } from 'src/app/common/guards/authentication.guard';
 import { RefreshTokenGuard } from 'src/app/common/guards/refresh-token.guard';
+import { RegisterEntity } from './entities/register.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +27,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(ValidationPipe)
   @Post('register')
-  register(@Body() body: RegisterDTO): Promise<RegisterDTO> {
+  register(@Body() body: RegisterDTO): Promise<RegisterEntity> {
     const role = Role.SEEKER;
     return this.authService.register(body, role);
   }
@@ -35,7 +36,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(ValidationPipe)
   @Post('register/employer')
-  registerAsEmployer(@Body() body: RegisterDTO): Promise<RegisterDTO> {
+  registerAsEmployer(@Body() body: RegisterDTO): Promise<RegisterEntity> {
     const role = Role.EMPLOYER;
     return this.authService.register(body, role);
   }

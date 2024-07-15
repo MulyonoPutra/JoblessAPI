@@ -6,7 +6,6 @@ import { UserEntity } from './user.entity';
 
 export class SeekerEntity {
   id: string;
-  birthday: string;
   summary: string;
   education?: EducationEntity[];
   experience?: ExperienceEntity[];

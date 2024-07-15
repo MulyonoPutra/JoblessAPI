@@ -1,37 +1,38 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import {
-  educationSelection,
-  experienceSelection,
-  userSelection,
-} from 'src/app/common/queries';
+import {HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException,} from '@nestjs/common';
+import {educationSelection, experienceSelection,} from 'src/app/common/queries';
 
-import { CreateApplicationDto } from './dto/create-application.dto';
-import { CreateEducationDto } from './dto/create-education.dto';
-import { CreateExperienceDto } from './dto/create-experience.dto';
-import { CreateSavedJobsDto } from './dto/create-saved-jobs.dto';
-import { CreateSeekerDto } from './dto/create-seeker.dto';
-import { CreateSkillDto } from './dto/create-skill.dto';
-import { EducationEntity } from './entities/education.entity';
-import { ExperienceEntity } from './entities/experience.entity';
-import { PrismaService } from 'src/app/prisma/prisma.service';
-import { SeekerEntity } from './entities/seeker.entity';
-import { UpdateEducationDto } from './dto/update-education.dto';
-import { UpdateSeekerDto } from './dto/update-seeker.dto';
+import {CreateApplicationDto} from './dto/create-application.dto';
+import {CreateEducationDto} from './dto/create-education.dto';
+import {CreateExperienceDto} from './dto/create-experience.dto';
+import {CreateSavedJobsDto} from './dto/create-saved-jobs.dto';
+import {CreateSeekerDto} from './dto/create-seeker.dto';
+import {CreateSkillDto} from './dto/create-skill.dto';
+import {EducationEntity} from './entities/education.entity';
+import {ExperienceEntity} from './entities/experience.entity';
+import {HttpCreated} from 'src/app/common/domain/http-created';
+import {PrismaService} from 'src/app/prisma/prisma.service';
+import {SeekerEntity} from './entities/seeker.entity';
+import {UpdateEducationDto} from './dto/update-education.dto';
+import {UpdateSeekerDto} from './dto/update-seeker.dto';
 
 @Injectable()
 export class SeekerService {
   constructor(private prismaService: PrismaService) {}
 
-  async create(createSeekerDto: CreateSeekerDto, userId: string) {
+  async create(
+    createSeekerDto: CreateSeekerDto,
+    userId: string,
+  ): Promise<HttpCreated> {
     createSeekerDto.userId = userId;
-    return await this.prismaService.seeker.create({
+    await this.prismaService.seeker.create({
       data: createSeekerDto,
     });
+
+    return {
+      status: HttpStatus.CREATED,
+      message: `Welcome! Please complete your profile. 
+      This will help us understand your qualifications better and improve your chances of getting hired.`,
+    };
   }
 
   async update(
@@ -40,27 +41,25 @@ export class SeekerService {
     seekerId: string,
   ): Promise<SeekerEntity> {
     updateSeekerDto.userId = userId;
-    return await this.prismaService.seeker.update({
+    return this.prismaService.seeker.update({
       data: updateSeekerDto,
-      where: { id: seekerId },
+      where: {id: seekerId},
       select: {
         id: true,
-        user: userSelection(),
-        birthday: true,
+        user: true,
         summary: true,
       },
     });
   }
 
   async findAll() {
-    return await this.prismaService.seeker.findMany({
+    return this.prismaService.seeker.findMany({
       select: {
         id: true,
-        birthday: true,
         summary: true,
         education: educationSelection(),
         experience: experienceSelection(),
-        user: userSelection(),
+        user: true,
         skills: {
           select: {
             id: true,
@@ -117,7 +116,6 @@ export class SeekerService {
       },
       select: {
         id: true,
-        birthday: true,
         summary: true,
         education: true,
         experience: true,
@@ -127,7 +125,7 @@ export class SeekerService {
             name: true,
           },
         },
-        user: userSelection(),
+        user: true,
         savedJobs: {
           select: {
             id: true,
@@ -184,13 +182,13 @@ export class SeekerService {
   }
 
   async remove(id: string) {
-    return await this.prismaService.seeker.delete({
-      where: { id },
+    return this.prismaService.seeker.delete({
+      where: {id},
     });
   }
 
   async newEducation(createEducationDto: CreateEducationDto[]) {
-    return await this.prismaService.education.createMany({
+    return this.prismaService.education.createMany({
       data: createEducationDto,
     });
   }
@@ -199,14 +197,14 @@ export class SeekerService {
     id: string,
     updateEducationDto: UpdateEducationDto,
   ): Promise<EducationEntity> {
-    return await this.prismaService.education.update({
+    return this.prismaService.education.update({
       data: updateEducationDto,
-      where: { id },
+      where: {id},
     });
   }
 
   async findExperienceById(id: string): Promise<ExperienceEntity> {
-    return await this.prismaService.experience.findFirst({
+    return this.prismaService.experience.findFirst({
       where: {
         id,
       },
@@ -214,7 +212,7 @@ export class SeekerService {
   }
 
   async findEducationById(id: string): Promise<EducationEntity> {
-    return await this.prismaService.education.findFirst({
+    return this.prismaService.education.findFirst({
       where: {
         id,
       },
@@ -222,13 +220,13 @@ export class SeekerService {
   }
 
   async removeEducation(id: string) {
-    return await this.prismaService.education.delete({
-      where: { id },
+    return this.prismaService.education.delete({
+      where: {id},
     });
   }
 
   async newExperience(createExperienceDto: CreateExperienceDto[]) {
-    return await this.prismaService.experience.createMany({
+    return this.prismaService.experience.createMany({
       data: createExperienceDto,
     });
   }
@@ -237,21 +235,21 @@ export class SeekerService {
     id: string,
     updateExperienceDto: CreateExperienceDto,
   ): Promise<ExperienceEntity> {
-    return await this.prismaService.experience.update({
+    return this.prismaService.experience.update({
       data: updateExperienceDto,
-      where: { id },
+      where: {id},
     });
   }
 
   async removeExperience(id: string) {
-    return await this.prismaService.experience.delete({
-      where: { id },
+    return this.prismaService.experience.delete({
+      where: {id},
     });
   }
 
   async removeSavedJobs(id: string) {
-    return await this.prismaService.savedJobs.delete({
-      where: { id },
+    return this.prismaService.savedJobs.delete({
+      where: {id},
     });
   }
 
@@ -262,13 +260,13 @@ export class SeekerService {
     // Check for existing application
     await this.onCheckExistingApp(createApplicationDto);
 
-    return await this.prismaService.application.create({
+    return this.prismaService.application.create({
       data: createApplicationDto,
     });
   }
 
   async createSavedJobs(createSavedJobsDto: CreateSavedJobsDto[]) {
-    return await this.prismaService.savedJobs.createMany({
+    return this.prismaService.savedJobs.createMany({
       data: createSavedJobsDto,
     });
   }
@@ -302,8 +300,8 @@ export class SeekerService {
   }
 
   async findSkillsBySeekerId(seekerId: string) {
-    return await this.prismaService.skill.findMany({
-      where: { seekerId },
+    return this.prismaService.skill.findMany({
+      where: {seekerId},
       select: {
         id: true,
         name: true,
@@ -329,14 +327,14 @@ export class SeekerService {
   }
 
   async removeSkills(id: string): Promise<CreateSkillDto> {
-    return await this.prismaService.skill.delete({
-      where: { id },
+    return this.prismaService.skill.delete({
+      where: {id},
     });
   }
 
   async findApplicationBySeekerId(seekerId: string) {
-    const applications = await this.prismaService.application.findMany({
-      where: { seekerId },
+    return this.prismaService.application.findMany({
+      where: {seekerId},
       include: {
         jobAds: {
           select: {
@@ -355,8 +353,6 @@ export class SeekerService {
         },
       },
     });
-
-    return applications;
   }
 
   private async onCheckJobAdsId(createApplicationDto: CreateApplicationDto) {
@@ -394,5 +390,33 @@ export class SeekerService {
         HttpStatus.CONFLICT,
       );
     }
+  }
+
+  async uploadResume(userId: string, file: Express.Multer.File) {
+    const filePath = `/uploads/${file.filename}`;
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId
+      },
+      select: {
+        id: true,
+        seeker: true,
+      },
+    })
+
+    if(user.seeker == null) {
+      throw new UnauthorizedException(
+          'Seeker ID is not found! Please complete your profile first!',
+      );
+    }
+
+    return this.prismaService.seeker.update({
+      where: {
+        id: user.seeker.id,
+      },
+      data: {
+        resume: filePath,
+      }
+    });
   }
 }

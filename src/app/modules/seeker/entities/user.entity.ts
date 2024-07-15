@@ -5,4 +5,5 @@ export class UserEntity {
   avatar: any;
   phone: any;
   role: string;
+  birthday: string;
 }

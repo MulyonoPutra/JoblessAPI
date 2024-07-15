@@ -32,7 +32,7 @@ export class AuthUtilityService {
         },
         {
           secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
-          expiresIn: '30m',
+          expiresIn: '1d',
         },
       ),
 
