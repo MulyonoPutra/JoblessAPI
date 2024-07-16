@@ -1,4 +1,4 @@
 export type eekerCreatedType = {
-	status: number;
-	message: string;
+    status: number;
+    message: string;
 };

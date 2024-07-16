@@ -1,4 +1,4 @@
 export class CreateSkillDto {
-	name: string;
-	seekerId: string;
+    name: string;
+    seekerId: string;
 }

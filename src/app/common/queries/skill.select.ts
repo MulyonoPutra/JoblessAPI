@@ -1,8 +1,8 @@
 export const skillSelect = () => {
-	return {
-		select: {
-			id: true,
-			name: true,
-		},
-	};
+    return {
+        select: {
+            id: true,
+            name: true,
+        },
+    };
 };

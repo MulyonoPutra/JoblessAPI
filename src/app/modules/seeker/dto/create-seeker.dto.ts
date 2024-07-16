@@ -1,5 +1,5 @@
 export class CreateSeekerDto {
-	userId: string;
-	summary: string;
-	desireSalary?: string;
+    userId: string;
+    summary: string;
+    desireSalary?: string;
 }

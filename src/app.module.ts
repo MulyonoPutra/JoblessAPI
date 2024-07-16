@@ -14,26 +14,26 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 @Module({
-	imports: [
-		CompanyModule,
-		JobAdsModule,
-		ProfileModule,
-		EmployerModule,
-		SeekerModule,
-		AuthModule,
-		PrismaModule,
-		ConfigModule.forRoot({ isGlobal: true }),
-		CloudinaryModule,
-		// ServeStaticModule.forRoot({
-		//   rootPath: join(__dirname, '..', 'public'),
-		// }),
+    imports: [
+        CompanyModule,
+        JobAdsModule,
+        ProfileModule,
+        EmployerModule,
+        SeekerModule,
+        AuthModule,
+        PrismaModule,
+        ConfigModule.forRoot({ isGlobal: true }),
+        CloudinaryModule,
+        // ServeStaticModule.forRoot({
+        //   rootPath: join(__dirname, '..', 'public'),
+        // }),
 
-		ServeStaticModule.forRoot({
-			rootPath: join(__dirname, '..', 'uploads'),
-			serveRoot: '/uploads',
-		}),
-	],
-	controllers: [AppController],
-	providers: [AppService],
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'uploads'),
+            serveRoot: '/uploads',
+        }),
+    ],
+    controllers: [AppController],
+    providers: [AppService],
 })
 export class AppModule {}

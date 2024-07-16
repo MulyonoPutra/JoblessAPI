@@ -9,22 +9,22 @@ import { Request } from 'express';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
-	constructor(config: ConfigService) {
-		super({
-			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-			secretOrKey: config.get<string>('REFRESH_TOKEN_SECRET'),
-			passReqToCallback: true,
-		});
-	}
+    constructor(config: ConfigService) {
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: config.get<string>('REFRESH_TOKEN_SECRET'),
+            passReqToCallback: true,
+        });
+    }
 
-	validate(req: Request, payload: JsonWebToken): JwtRefreshToken {
-		const refreshToken = req?.get('authorization')?.replace('Bearer', '').trim();
+    validate(req: Request, payload: JsonWebToken): JwtRefreshToken {
+        const refreshToken = req?.get('authorization')?.replace('Bearer', '').trim();
 
-		if (!refreshToken) throw new ForbiddenException('Refresh token malformed');
+        if (!refreshToken) throw new ForbiddenException('Refresh token malformed');
 
-		return {
-			...payload,
-			refreshToken,
-		};
-	}
+        return {
+            ...payload,
+            refreshToken,
+        };
+    }
 }

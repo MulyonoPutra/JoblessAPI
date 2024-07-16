@@ -1,3 +1,3 @@
 export class UpdateEmployerDto {
-	accountName: string;
+    accountName: string;
 }

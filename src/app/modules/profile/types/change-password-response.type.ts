@@ -1,3 +1,3 @@
 export type ChangePasswordResponseType = {
-	isPasswordChanged: boolean;
+    isPasswordChanged: boolean;
 };
