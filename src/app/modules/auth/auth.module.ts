@@ -9,23 +9,18 @@ import { PrismaModule } from 'src/app/prisma/prisma.module';
 import { RefreshTokenStrategy } from './strategy/refresh-token.strategy';
 
 @Module({
-  imports: [
-    PrismaModule,
-    PassportModule.register({
-      defaultStrategy: 'jwt',
-      property: 'user',
-      session: false,
-    }),
+	imports: [
+		PrismaModule,
+		PassportModule.register({
+			defaultStrategy: 'jwt',
+			property: 'user',
+			session: false,
+		}),
 
-    JwtModule.register({}),
-  ],
-  exports: [PassportModule, JwtModule],
-  providers: [
-    AuthService,
-    AuthUtilityService,
-    JwtStrategy,
-    RefreshTokenStrategy,
-  ],
-  controllers: [AuthController],
+		JwtModule.register({}),
+	],
+	exports: [PassportModule, JwtModule],
+	providers: [AuthService, AuthUtilityService, JwtStrategy, RefreshTokenStrategy],
+	controllers: [AuthController],
 })
 export class AuthModule {}

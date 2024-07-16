@@ -1,3 +1,3 @@
 export interface JwtRefreshToken {
-  refreshToken: string;
+	refreshToken: string;
 }

@@ -1,5 +1,5 @@
 export class CreateEmployerDto {
-  userId: string;
-  accountName: string;
-  accountNumber: string;
+	userId: string;
+	accountName: string;
+	accountNumber: string;
 }

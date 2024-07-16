@@ -4,8 +4,8 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from 'src/app/prisma/prisma.module';
 
 @Module({
-  imports: [PrismaModule],
-  controllers: [EmployerController],
-  providers: [EmployerService],
+	imports: [PrismaModule],
+	controllers: [EmployerController],
+	providers: [EmployerService],
 })
 export class EmployerModule {}

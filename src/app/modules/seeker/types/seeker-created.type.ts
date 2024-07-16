@@ -1,4 +1,4 @@
-export type SeekerCreatedType = {
-    status: number;
-    message: string;
-}
+export type eekerCreatedType = {
+	status: number;
+	message: string;
+};

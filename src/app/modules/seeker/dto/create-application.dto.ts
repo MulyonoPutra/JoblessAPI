@@ -1,6 +1,6 @@
 export class CreateApplicationDto {
-  status: string;
-  date: Date;
-  seekerId: string;
-  jobAdsId: string;
+	status: string;
+	date: Date;
+	seekerId: string;
+	jobAdsId: string;
 }

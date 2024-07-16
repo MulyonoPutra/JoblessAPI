@@ -3,18 +3,18 @@ import { JobAdsController } from './job-ads.controller';
 import { JobAdsService } from './job-ads.service';
 
 describe('JobAdsController', () => {
-  let controller: JobAdsController;
+	let controller: JobAdsController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [JobAdsController],
-      providers: [JobAdsService],
-    }).compile();
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			controllers: [JobAdsController],
+			providers: [JobAdsService],
+		}).compile();
 
-    controller = module.get<JobAdsController>(JobAdsController);
-  });
+		controller = module.get<JobAdsController>(JobAdsController);
+	});
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+	it('should be defined', () => {
+		expect(controller).toBeDefined();
+	});
 });
