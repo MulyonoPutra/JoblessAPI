@@ -22,6 +22,9 @@ import { AuthorizationGuard } from 'src/app/common/guards/authorization.guard';
 import { Role } from '../auth/enums/role.enum';
 import { ChangePasswordDto } from '../auth/dto/change-password.dto';
 import { ChangePasswordResponseType } from './types/change-password-response.type';
+import {UpdateProfileResponseType} from "./types/update-profile-response.type";
+import {HttpCreated} from "../../common/domain/http-created";
+import {ProfileResponseType} from "./types/profile-response.type";
 
 @Controller('profile')
 export class ProfileController {
@@ -32,7 +35,7 @@ export class ProfileController {
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @UsePipes(ValidationPipe)
   @Get()
-  findAll() {
+  findAll(): Promise<ProfileResponseType[]> {
     return this.profileService.findAll();
   }
 
@@ -41,14 +44,14 @@ export class ProfileController {
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @UsePipes(ValidationPipe)
   @Get('detail')
-  findOne(@CurrentUserId() userId: string) {
+  findOne(@CurrentUserId() userId: string): Promise<ProfileResponseType> {
     return this.profileService.findOne(userId);
   }
 
   @UseGuards(AuthenticationGuard)
   @UsePipes(ValidationPipe)
   @Patch('/:id')
-  update(@CurrentUserId() userId: string, @Body() body: UpdateProfileDto) {
+  update(@CurrentUserId() userId: string, @Body() body: UpdateProfileDto): Promise<UpdateProfileResponseType> {
     return this.profileService.update(userId, body);
   }
 
@@ -56,7 +59,7 @@ export class ProfileController {
   async upload(
     @CurrentUserId() userId: string,
     @UploadedFile() file: Express.Multer.File,
-  ) {
+  ): Promise<HttpCreated> {
     return await this.profileService.uploadAvatar(userId, file);
   }
 

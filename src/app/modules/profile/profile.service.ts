@@ -14,12 +14,16 @@ import { ChangePasswordDto } from '../auth/dto/change-password.dto';
 
 import { compare, hash } from 'bcrypt';
 import { ChangePasswordResponseType } from './types/change-password-response.type';
+import {HttpCreated} from "../../common/domain/http-created";
+import {ResponseMessage} from "../../common/constants/response-message";
+import {UpdateProfileResponseType} from "./types/update-profile-response.type";
+import {ProfileResponseType} from "./types/profile-response.type";
 
 @Injectable()
 export class ProfileService {
   constructor(private prismaService: PrismaService) {}
 
-  async uploadAvatar(id: string, file: Express.Multer.File) {
+  async uploadAvatar(id: string, file: Express.Multer.File): Promise<HttpCreated> {
     const result: cloudinary.UploadApiResponse =
       await cloudinary.v2.uploader.upload(file.path, {
         folder: 'nest',
@@ -43,8 +47,8 @@ export class ProfileService {
 
       if (updated) {
         return {
-          statusCode: 200,
-          message: 'Avatar Uploaded!',
+          status: HttpStatus.OK,
+          message: ResponseMessage.AVATAR_UPLOADED,
         };
       }
     }
@@ -52,7 +56,7 @@ export class ProfileService {
     throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
   }
 
-  async findAll(): Promise<Profile[]> {
+  async findAll(): Promise<ProfileResponseType[]> {
     return this.prismaService.user.findMany({
       select: {
         id: true,
@@ -62,12 +66,23 @@ export class ProfileService {
         phone: true,
         role: true,
         createdAt: true,
-        seeker: true,
+        seeker: {
+          select: {
+            id: true,
+            summary: true,
+            resume: true,
+            coverLetter: true,
+            desireSalary: true,
+            startDate: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        },
       },
     });
   }
 
-  async findOne(id: string): Promise<Profile> {
+  async findOne(id: string): Promise<ProfileResponseType> {
     return this.prismaService.user.findUnique({
       where: {
         id,
@@ -80,12 +95,23 @@ export class ProfileService {
         phone: true,
         role: true,
         createdAt: true,
-        seeker: true,
+        seeker: {
+          select: {
+            id: true,
+            summary: true,
+            resume: true,
+            coverLetter: true,
+            desireSalary: true,
+            startDate: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        },
       },
     });
   }
 
-  async update(id: string, data: UpdateProfileDto): Promise<UpdateProfileDto> {
+  async update(id: string, data: UpdateProfileDto): Promise<UpdateProfileResponseType> {
     return this.prismaService.user.update({
       data,
       where: { id },
@@ -95,6 +121,7 @@ export class ProfileService {
         name: true,
         avatar: true,
         phone: true,
+        birthday: true
       },
     });
   }

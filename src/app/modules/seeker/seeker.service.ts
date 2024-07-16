@@ -1,5 +1,5 @@
 import {HttpException, HttpStatus, Injectable, NotFoundException, UnauthorizedException,} from '@nestjs/common';
-import {educationSelection, experienceSelection,} from 'src/app/common/queries';
+import {educationSelection, experienceSelection, userSelection,} from 'src/app/common/queries';
 
 import {CreateApplicationDto} from './dto/create-application.dto';
 import {CreateEducationDto} from './dto/create-education.dto';
@@ -9,11 +9,12 @@ import {CreateSeekerDto} from './dto/create-seeker.dto';
 import {CreateSkillDto} from './dto/create-skill.dto';
 import {EducationEntity} from './entities/education.entity';
 import {ExperienceEntity} from './entities/experience.entity';
-import {HttpCreated} from 'src/app/common/domain/http-created';
 import {PrismaService} from 'src/app/prisma/prisma.service';
 import {SeekerEntity} from './entities/seeker.entity';
 import {UpdateEducationDto} from './dto/update-education.dto';
 import {UpdateSeekerDto} from './dto/update-seeker.dto';
+import {SeekerCreatedType} from "./types/seeker-created.type";
+import {ResponseMessage} from "../../common/constants/response-message";
 
 @Injectable()
 export class SeekerService {
@@ -22,7 +23,7 @@ export class SeekerService {
   async create(
     createSeekerDto: CreateSeekerDto,
     userId: string,
-  ): Promise<HttpCreated> {
+  ): Promise<SeekerCreatedType> {
     createSeekerDto.userId = userId;
     await this.prismaService.seeker.create({
       data: createSeekerDto,
@@ -30,8 +31,7 @@ export class SeekerService {
 
     return {
       status: HttpStatus.CREATED,
-      message: `Welcome! Please complete your profile. 
-      This will help us understand your qualifications better and improve your chances of getting hired.`,
+      message: ResponseMessage.CREATED_SEEKER,
     };
   }
 
@@ -59,7 +59,7 @@ export class SeekerService {
         summary: true,
         education: educationSelection(),
         experience: experienceSelection(),
-        user: true,
+        user: userSelection(),
         skills: {
           select: {
             id: true,

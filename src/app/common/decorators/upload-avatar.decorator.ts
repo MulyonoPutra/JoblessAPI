@@ -16,7 +16,7 @@ export function UploadAvatarDecorator() {
       FileInterceptor('avatar', {
         storage: diskStorage({
           destination: 'public/uploads/image',
-          filename: (req, file, cb) => {
+          filename: (_req, file, cb) => {
             cb(null, file.originalname);
           },
         }),

@@ -4,3 +4,4 @@ export * from './public.decorator';
 export * from './role.decorator';
 export * from './employer.decorator';
 export * from './upload-logo.decorator';
+export * from './upload-file.decorator';

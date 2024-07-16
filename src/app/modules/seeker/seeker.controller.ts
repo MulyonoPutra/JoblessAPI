@@ -10,7 +10,7 @@ import {
   Post, UploadedFile,
   UseGuards,
 } from '@nestjs/common';
-import { CurrentUserId, Roles } from 'src/app/common/decorators';
+import {CurrentUserId, Roles, UploadFileDecorator} from 'src/app/common/decorators';
 import { AuthenticationGuard } from 'src/app/common/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/app/common/guards/authorization.guard';
 import { Role } from '../auth/enums/role.enum';
@@ -26,7 +26,6 @@ import { SeekerService } from './seeker.service';
 import { ExperienceEntity } from './entities/experience.entity';
 import { EducationEntity } from './entities/education.entity';
 import { HttpCreated } from 'src/app/common/domain/http-created';
-import {UploadFileDecorator} from "../../common/decorators/upload-file.decorator";
 
 @Controller('seeker')
 export class SeekerController {
