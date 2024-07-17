@@ -1,4 +1,4 @@
-export const userSelection = () => {
+export const userSelector = () => {
     return {
         select: {
             id: true,

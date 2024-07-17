@@ -86,7 +86,7 @@ export class SeekerController {
     createEducation(
         @Param('seekerId') seekerId: string,
         @Body() createEducationDto: CreateEducationDto[],
-    ): Promise<HttpCreated> {
+    ): Promise<EducationResponseType[]> {
         return this.seekerService.newEducation(seekerId, createEducationDto);
     }
 

@@ -1,4 +1,4 @@
-export const experienceSelection = () => {
+export const experienceSelector = () => {
     return {
         select: {
             id: true,
@@ -10,4 +10,4 @@ export const experienceSelection = () => {
             responsibilities: true,
         },
     };
-};
+}

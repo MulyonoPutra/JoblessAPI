@@ -7,6 +7,7 @@ import {
     Injectable,
     NotFoundException,
 } from '@nestjs/common';
+import { educationSelector, experienceSelector } from 'src/app/common/selectors';
 
 import { CreateAddressDto } from './dto/create-address.dto';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -17,7 +18,6 @@ import { EmployerCreatedType } from './types/employer-created.type';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { generateCustomId } from 'src/app/common/utility/generator-id';
-import { educationSelection, experienceSelection, userSelection } from 'src/app/common/queries';
 
 @Injectable()
 export class EmployerService {
@@ -70,16 +70,36 @@ export class EmployerService {
                                     select: {
                                         id: true,
                                         summary: true,
-                                        user: userSelection(),
-                                        education: educationSelection(),
-                                        experience: experienceSelection(),
+                                        user: {
+                                            select: {
+                                                id: true,
+                                                name: true,
+                                                email: true,
+                                                avatar: true,
+                                                phone: true,
+                                                birthday: true,
+                                                gender: true,
+                                            },
+                                        },
+                                        education: educationSelector(),
+                                        experience: experienceSelector(),
                                     },
                                 },
                             },
                         },
                     },
                 },
-                user: userSelection(),
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        avatar: true,
+                        phone: true,
+                        birthday: true,
+                        gender: true,
+                    },
+                },
             },
         });
     }

@@ -6,6 +6,7 @@ import { SearchJobDto } from './dto/search-job.dto';
 export class JobAdsService {
     constructor(private prismaService: PrismaService) {}
 
+    // TODO: Create Promise type
     async findOrSearch(searchJobDto: SearchJobDto) {
         const { query } = searchJobDto;
         if (query) {
@@ -15,6 +16,7 @@ export class JobAdsService {
         }
     }
 
+    // TODO: Create Promise type
     private search(query: string) {
         return this.prismaService.jobAds.findMany({
             where: {
@@ -44,6 +46,7 @@ export class JobAdsService {
         });
     }
 
+    // TODO: Create Promise type
     private async findAll() {
         return await this.prismaService.jobAds.findMany({
             select: {
@@ -64,6 +67,7 @@ export class JobAdsService {
         });
     }
 
+    // TODO: Create Promise type
     async findOne(id: string) {
         return await this.prismaService.jobAds.findFirst({
             where: {

@@ -9,7 +9,7 @@ import { LoginDTO } from './dto/login.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { RegisterDTO } from './dto/register.dto';
-import { RegisterEntity } from './entities/register.entity';
+import { RegisterResponseType } from './types/register.response-type';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
         private utils: AuthUtilityService,
     ) {}
 
-    async register(data: RegisterDTO, role: string): Promise<RegisterEntity> {
+    async register(data: RegisterDTO, role: string): Promise<RegisterResponseType> {
         const password = await hash(data.password, 12);
         const user = await this.prismaService.user
             .create({

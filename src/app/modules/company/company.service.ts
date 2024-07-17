@@ -6,6 +6,7 @@ import { SearchCompanyDto } from './dto/search-company.dto';
 export class CompanyService {
     constructor(private prismaService: PrismaService) {}
 
+    // TODO: Create Promise type
     async findOrSearch(searchCompanyDto: SearchCompanyDto): Promise<any> {
         const { query } = searchCompanyDto;
         if (query) {
@@ -15,6 +16,7 @@ export class CompanyService {
         }
     }
 
+    // TODO: Create Promise type
     private findAll() {
         return this.prismaService.company.findMany({
             select: {
@@ -47,6 +49,7 @@ export class CompanyService {
         });
     }
 
+    // TODO: Create Promise type
     private search(query: string) {
         return this.prismaService.company.findMany({
             where: {
@@ -87,6 +90,7 @@ export class CompanyService {
         });
     }
 
+    // TODO: Create Promise type
     async findOne(id: string) {
         return await this.prismaService.company.findFirst({
             where: {
@@ -121,6 +125,7 @@ export class CompanyService {
         });
     }
 
+    // TODO: Create Promise type
     async findJobAdsByCompanyId(id: string): Promise<any[]> {
         const company = await this.prismaService.company.findUnique({
             where: { id },

@@ -2,6 +2,7 @@ import * as cloudinary from 'cloudinary';
 
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
+import { seekerSelector, userPlainSelector } from 'src/app/common/selectors';
 
 import { ChangePasswordDto } from '../auth/dto/change-password.dto';
 import { ChangePasswordResponseType } from './types/change-password-response.type';
@@ -14,8 +15,9 @@ import { UpdateProfileResponseType } from './types/update-profile-response.type'
 
 @Injectable()
 export class ProfileService {
-    constructor(private prismaService: PrismaService) {}
+    constructor(private prismaService: PrismaService) { }
 
+    // TODO: Create Promise type
     async uploadAvatar(id: string, file: Express.Multer.File): Promise<HttpCreated> {
         const result: cloudinary.UploadApiResponse = await cloudinary.v2.uploader.upload(
             file.path,
@@ -61,71 +63,72 @@ export class ProfileService {
                 phone: true,
                 role: true,
                 createdAt: true,
-                seeker: {
-                    select: {
-                        id: true,
-                        summary: true,
-                        resume: true,
-                        coverLetter: true,
-                        desireSalary: true,
-                        startDate: true,
-                        createdAt: true,
-                        updatedAt: true,
-                    },
-                },
+                seeker: seekerSelector()
             },
         });
     }
 
     async findOne(id: string): Promise<ProfileResponseType> {
-        return this.prismaService.user.findUnique({
-            where: {
-                id,
-            },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                avatar: true,
-                phone: true,
-                role: true,
-                createdAt: true,
-                seeker: {
-                    select: {
-                        id: true,
-                        summary: true,
-                        resume: true,
-                        coverLetter: true,
-                        desireSalary: true,
-                        startDate: true,
-                        createdAt: true,
-                        updatedAt: true,
-                    },
+        if (id) {
+            return this.prismaService.user.findUnique({
+                where: {
+                    id,
                 },
-            },
-        });
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    avatar: true,
+                    phone: true,
+                    role: true,
+                    createdAt: true,
+                    seeker: seekerSelector()
+                },
+            });
+        } else {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'User ID is required',
+            }, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     async update(id: string, data: UpdateProfileDto): Promise<UpdateProfileResponseType> {
         return this.prismaService.user.update({
             data,
             where: { id },
-            select: {
-                id: true,
-                email: true,
-                name: true,
-                avatar: true,
-                phone: true,
-                birthday: true,
-            },
+            select: userPlainSelector()
         });
     }
 
-    async remove(id: string) {
-        return this.prismaService.user.delete({
-            where: { id },
-        });
+    async remove(id: string): Promise<void> {
+        if (!id) {
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'User ID is required',
+            }, HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            await this.prismaService.user.delete({
+                where: { id },
+            });
+        } catch (error) {
+            if (error.code === 'P2025') {
+                throw new HttpException({
+                    status: HttpStatus.NOT_FOUND,
+                    error: `User with ID ${id} not found`,
+                }, HttpStatus.NOT_FOUND);
+            } else {
+                throw new HttpException({
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Failed to delete user',
+                }, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
     }
+
 
     async changePassword(
         id: string,

@@ -1,4 +1,4 @@
-export const educationSelection = () => {
+export const educationSelector = () => {
     return {
         select: {
             id: true,
@@ -10,4 +10,4 @@ export const educationSelection = () => {
             GPA: true,
         },
     };
-};
+}
