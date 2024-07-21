@@ -10,4 +10,4 @@ export const educationSelector = () => {
             GPA: true,
         },
     };
-}
+};

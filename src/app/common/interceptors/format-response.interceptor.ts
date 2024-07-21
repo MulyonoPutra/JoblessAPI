@@ -11,7 +11,7 @@ export class FormatResponseInterceptor implements NestInterceptor {
         return next.handle().pipe(
             map((value) => {
                 value = value ?? value;
-                let message = '';
+                let message: string;
                 switch (method) {
                     case 'GET':
                         message =

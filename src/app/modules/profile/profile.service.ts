@@ -15,7 +15,7 @@ import { UpdateProfileResponseType } from './types/update-profile-response.type'
 
 @Injectable()
 export class ProfileService {
-    constructor(private prismaService: PrismaService) { }
+    constructor(private prismaService: PrismaService) {}
 
     // TODO: Create Promise type
     async uploadAvatar(id: string, file: Express.Multer.File): Promise<HttpCreated> {
@@ -63,7 +63,7 @@ export class ProfileService {
                 phone: true,
                 role: true,
                 createdAt: true,
-                seeker: seekerSelector()
+                seeker: seekerSelector(),
             },
         });
     }
@@ -82,32 +82,37 @@ export class ProfileService {
                     phone: true,
                     role: true,
                     createdAt: true,
-                    seeker: seekerSelector()
+                    seeker: seekerSelector(),
                 },
             });
         } else {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: 'User ID is required',
-            }, HttpStatus.BAD_REQUEST);
+            throw new HttpException(
+                {
+                    status: HttpStatus.BAD_REQUEST,
+                    error: 'User ID is required',
+                },
+                HttpStatus.BAD_REQUEST,
+            );
         }
-
     }
 
     async update(id: string, data: UpdateProfileDto): Promise<UpdateProfileResponseType> {
         return this.prismaService.user.update({
             data,
             where: { id },
-            select: userPlainSelector()
+            select: userPlainSelector(),
         });
     }
 
     async remove(id: string): Promise<void> {
         if (!id) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: 'User ID is required',
-            }, HttpStatus.BAD_REQUEST);
+            throw new HttpException(
+                {
+                    status: HttpStatus.BAD_REQUEST,
+                    error: 'User ID is required',
+                },
+                HttpStatus.BAD_REQUEST,
+            );
         }
 
         try {
@@ -116,19 +121,24 @@ export class ProfileService {
             });
         } catch (error) {
             if (error.code === 'P2025') {
-                throw new HttpException({
-                    status: HttpStatus.NOT_FOUND,
-                    error: `User with ID ${id} not found`,
-                }, HttpStatus.NOT_FOUND);
+                throw new HttpException(
+                    {
+                        status: HttpStatus.NOT_FOUND,
+                        error: `User with ID ${id} not found`,
+                    },
+                    HttpStatus.NOT_FOUND,
+                );
             } else {
-                throw new HttpException({
-                    status: HttpStatus.INTERNAL_SERVER_ERROR,
-                    error: 'Failed to delete user',
-                }, HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new HttpException(
+                    {
+                        status: HttpStatus.INTERNAL_SERVER_ERROR,
+                        error: 'Failed to delete user',
+                    },
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                );
             }
         }
     }
-
 
     async changePassword(
         id: string,

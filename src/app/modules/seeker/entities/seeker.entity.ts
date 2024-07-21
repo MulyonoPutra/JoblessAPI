@@ -11,5 +11,5 @@ export class SeekerEntity {
     experience?: ExperienceEntity[];
     user?: UserEntity;
     savedJobs?: SavedJobsEntity[];
-    Application?: ApplicationEntity[];
+    application?: ApplicationEntity[];
 }

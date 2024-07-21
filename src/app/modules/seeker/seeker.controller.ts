@@ -23,15 +23,29 @@ import { CreateSeekerDto } from './dto/create-seeker.dto';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
 import { UpdateSeekerDto } from './dto/update-seeker.dto';
-import { SeekerService } from './seeker.service';
-import { ExperienceEntity } from './entities/experience.entity';
-import { HttpCreated } from 'src/app/common/domain/http-created';
+import { ApplicationService } from './services/application.service';
+import { EducationService } from './services/education.service';
+import { ExperienceService } from './services/experience.service';
+import { SavedJobsService } from './services/saved-jobs.service';
+import { SeekerService } from './services/seeker.service';
+import { SkillService } from './services/skill.service';
 import { EducationResponseType } from './types/education-response.type';
+import { ExperienceResponseType } from './types/experience.response-type';
+import { SkillsResponseType } from './types/skills.response-type';
+import { CreateApplicationResponseType } from './types/create-application.response-type';
 
 @Controller('seeker')
 export class SeekerController {
-    constructor(private readonly seekerService: SeekerService) {}
+    constructor(
+        private readonly seekerService: SeekerService,
+        private readonly educationService: EducationService,
+        private readonly experienceService: ExperienceService,
+        private readonly savedJobsService: SavedJobsService,
+        private readonly skillService: SkillService,
+        private readonly applicationService: ApplicationService,
+    ) {}
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
@@ -39,10 +53,11 @@ export class SeekerController {
     create(
         @Body() createSeekerDto: CreateSeekerDto,
         @CurrentUserId() userId: string,
-    ): Promise<HttpCreated> {
+    ): Promise<{ summary: string }> {
         return this.seekerService.create(createSeekerDto, userId);
     }
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
@@ -51,6 +66,7 @@ export class SeekerController {
         return this.seekerService.findAll();
     }
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
@@ -63,10 +79,11 @@ export class SeekerController {
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Delete(':id')
-    remove(@Param('id') id: string) {
+    remove(@Param('id') id: string): Promise<void> {
         return this.seekerService.remove(id);
     }
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
@@ -87,7 +104,7 @@ export class SeekerController {
         @Param('seekerId') seekerId: string,
         @Body() createEducationDto: CreateEducationDto[],
     ): Promise<EducationResponseType[]> {
-        return this.seekerService.newEducation(seekerId, createEducationDto);
+        return this.educationService.newEducation(seekerId, createEducationDto);
     }
 
     @Roles(Role.SEEKER)
@@ -98,7 +115,7 @@ export class SeekerController {
         @Param('id') id: string,
         @Body() updateEducationDto: UpdateEducationDto,
     ): Promise<void> {
-        return this.seekerService.updateEducation(id, updateEducationDto);
+        return this.educationService.updateEducation(id, updateEducationDto);
     }
 
     @Roles(Role.SEEKER)
@@ -106,31 +123,34 @@ export class SeekerController {
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Get('education/:id')
     findEducationById(@Param('id') id: string): Promise<EducationResponseType> {
-        return this.seekerService.findEducationById(id);
+        return this.educationService.findEducationById(id);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Delete('education/:id')
-    removeEducation(@Param('id') id: string) {
-        return this.seekerService.removeEducation(id);
+    removeEducation(@Param('id') id: string): Promise<void> {
+        return this.educationService.removeEducation(id);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Delete('experience/:id')
-    removeExperience(@Param('id') id: string) {
-        return this.seekerService.removeExperience(id);
+    removeExperience(@Param('id') id: string): Promise<void> {
+        return this.experienceService.removeExperience(id);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
-    @Post('experience')
-    createExperience(@Body() createExperienceDto: CreateExperienceDto[]) {
-        return this.seekerService.newExperience(createExperienceDto);
+    @Post('experience/:seekerId')
+    createExperience(
+        @Param('seekerId') seekerId: string,
+        @Body() createExperienceDto: CreateExperienceDto[],
+    ): Promise<ExperienceResponseType[]> {
+        return this.experienceService.newExperience(seekerId, createExperienceDto);
     }
 
     @Roles(Role.SEEKER)
@@ -140,32 +160,33 @@ export class SeekerController {
     updateExperience(
         @Param('id') id: string,
         @Body() updateExperienceDto: CreateExperienceDto,
-    ): Promise<ExperienceEntity> {
-        return this.seekerService.updateExperience(id, updateExperienceDto);
+    ): Promise<void> {
+        return this.experienceService.updateExperience(id, updateExperienceDto);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Get('experience/:id')
-    findExperienceById(@Param('id') id: string): Promise<ExperienceEntity> {
-        return this.seekerService.findExperienceById(id);
+    findExperienceById(@Param('id') id: string): Promise<ExperienceResponseType> {
+        return this.experienceService.findExperienceById(id);
     }
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Post('application')
-    createApplication(@Body() createApplicationDto: CreateApplicationDto) {
-        return this.seekerService.createApplication(createApplicationDto);
+    createApplication(@Body() createApplicationDto: CreateApplicationDto): Promise<CreateApplicationResponseType> {
+        return this.applicationService.createApplication(createApplicationDto);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Post('saved-jobs')
-    createSavedJobs(@Body() createSavedJobsDto: CreateSavedJobsDto[]) {
-        return this.seekerService.createSavedJobs(createSavedJobsDto);
+    createSavedJobs(@Body() createSavedJobsDto: CreateSavedJobsDto): Promise<void> {
+        return this.savedJobsService.createSavedJobs(createSavedJobsDto);
     }
 
     @Roles(Role.SEEKER)
@@ -175,50 +196,53 @@ export class SeekerController {
     newSkills(
         @Param('id') id: string,
         @Body() createSkillsDto: CreateSkillDto[],
-    ): Promise<CreateSkillDto[]> {
-        return this.seekerService.createNewSkills(id, createSkillsDto);
+    ): Promise<SkillsResponseType[]> {
+        return this.skillService.addSkillsBySeekerId(id, createSkillsDto);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Delete('skills/:id')
-    removeSkills(@Param('id') id: string): Promise<CreateSkillDto> {
-        return this.seekerService.removeSkills(id);
+    removeSkills(@Param('id') id: string): Promise<void> {
+        return this.skillService.removeSkills(id);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Get('skills/:id')
-    findSkills(@Param('id') id: string) {
-        return this.seekerService.findSkillsBySeekerId(id);
+    findSkills(@Param('id') id: string): Promise<SkillsResponseType[]> {
+        return this.skillService.findSkillsBySeekerId(id);
     }
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Get('saved-jobs/:id')
     findAllSavedJobs(@Param('id') id: string) {
-        return this.seekerService.findSavedJobsBySeekerId(id);
+        return this.savedJobsService.findSavedJobsBySeekerId(id);
     }
 
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Delete('saved-jobs/:id')
-    removeSavedJobs(@Param('id') id: string) {
-        return this.seekerService.removeSavedJobs(id);
+    removeSavedJobs(@Param('id') id: string): Promise<void> {
+        return this.savedJobsService.removeSavedJobs(id);
     }
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Get('application/:id')
     findAllApplication(@Param('id') id: string) {
-        return this.seekerService.findApplicationBySeekerId(id);
+        return this.applicationService.findApplicationBySeekerId(id);
     }
 
+    // TODO: Create Promise type
     @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
     @Post('upload')

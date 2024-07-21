@@ -6,6 +6,9 @@ import { CreateEmployerDto } from './dto/create-employer.dto';
 import { CreateJobAdsDto } from './dto/create-job-ads.dto';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
 import { EmployerService } from './employer.service';
+import { EmployerCreatedType } from './types/employer-created.type';
+import { CompanyResponseType } from './types/company.response-type';
+import { CreatedJobAdsType } from './types/created-job-ads.type';
 
 @Controller('employer')
 export class EmployerController {
@@ -13,16 +16,21 @@ export class EmployerController {
 
     @EmployerDecorator()
     @Post()
-    create(@Body() createEmployerDto: CreateEmployerDto, @CurrentUserId() userId: string) {
+    create(
+        @Body() createEmployerDto: CreateEmployerDto,
+        @CurrentUserId() userId: string,
+    ): Promise<EmployerCreatedType> {
         return this.employerService.create(createEmployerDto, userId);
     }
 
+    // TODO: Create Promise type
     @EmployerDecorator()
     @Get()
     findAll() {
         return this.employerService.findAll();
     }
 
+    // TODO: Create Promise type
     @EmployerDecorator()
     @Get(':id')
     findOne(@Param('id') id: string) {
@@ -31,39 +39,51 @@ export class EmployerController {
 
     @EmployerDecorator()
     @Patch(':id')
-    updateEmployer(@Body() updateEmployerDto: UpdateEmployerDto, @Param('id') seekerId: string) {
+    updateEmployer(
+        @Body() updateEmployerDto: UpdateEmployerDto,
+        @Param('id') seekerId: string,
+    ): Promise<void> {
         return this.employerService.update(seekerId, updateEmployerDto);
     }
 
     @EmployerDecorator()
     @Delete(':id')
-    remove(@Param('id') id: string) {
+    remove(@Param('id') id: string): Promise<void> {
         return this.employerService.removeJobAds(id);
     }
 
     @EmployerDecorator()
-    @Post('job-ads')
-    createJobAds(@Body() createJobAdsDto: CreateJobAdsDto) {
-        return this.employerService.createJobAds(createJobAdsDto);
+    @Post('job-ads/:id')
+    createJobAds(
+        @Param('id') employerId: string,
+        @Body() createJobAdsDto: CreateJobAdsDto,
+    ): Promise<CreatedJobAdsType> {
+        return this.employerService.createJobAds(employerId, createJobAdsDto);
     }
 
     @EmployerDecorator()
-    @Post('company')
-    createCompany(@Body() createCompanyDto: CreateCompanyDto) {
-        return this.employerService.createCompany(createCompanyDto);
+    @Post('company/:id')
+    createCompany(
+        @Param('id') employerId: string,
+        @Body() createCompanyDto: CreateCompanyDto,
+    ): Promise<CompanyResponseType> {
+        return this.employerService.createCompany(employerId, createCompanyDto);
     }
 
+    // TODO: Create Promise type
     @EmployerDecorator()
     @Post('address')
     createAddress(@Body() createAddressDto: CreateAddressDto) {
         return this.employerService.createAddress(createAddressDto);
     }
 
+    // TODO: Create Promise type
     @UploadLogoDecorator()
     async upload(@Param('id') companyId: string, @UploadedFile() file: Express.Multer.File) {
         return await this.employerService.uploadLogo(companyId, file);
     }
 
+    // TODO: Create Promise type
     @EmployerDecorator()
     @Get('job-ads')
     findAllJobAds() {

@@ -1,7 +1,7 @@
-import { educationSelector } from "./education.selector"
-import { experienceSelector } from "./experience.selector"
-import { licenseSelector } from "./license.selector"
-import { skillSelector } from "./skill.selector"
+import { educationSelector } from './education.selector';
+import { experienceSelector } from './experience.selector';
+import { licenseSelector } from './license.selector';
+import { skillSelector } from './skill.selector';
 
 export const seekerSelector = () => {
     return {
@@ -16,9 +16,8 @@ export const seekerSelector = () => {
             updatedAt: true,
             education: educationSelector(),
             experience: experienceSelector(),
-            skill: skillSelector(),
-            license: licenseSelector()
-            
-        }
-    }
-}
+            skills: skillSelector(),
+            license: licenseSelector(),
+        },
+    };
+};

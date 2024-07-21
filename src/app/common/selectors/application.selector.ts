@@ -1,6 +1,11 @@
+import { companySelector } from "./company.selector";
+
 export const applicationSelector = () => {
     return {
         select: {
+            id: true,
+            status: true,
+            date: true,
             jobAds: {
                 select: {
                     id: true,
@@ -12,15 +17,12 @@ export const applicationSelector = () => {
                         select: {
                             id: true,
                             accountName: true,
-                            company: true,
+                            company: companySelector(),
                         },
                     },
                     createdAt: true,
                 },
             },
-            id: true,
-            status: true,
-            date: true,
         },
-    }
-}
+    };
+};

@@ -7,11 +7,13 @@ import { SearchJobDto } from './dto/search-job.dto';
 export class JobAdsController {
     constructor(private readonly jobAdsService: JobAdsService) {}
 
+    // TODO: Create Promise type
     @Get()
     findAll(@Query() searchJobDto: SearchJobDto) {
         return this.jobAdsService.findOrSearch(searchJobDto);
     }
 
+    // TODO: Create Promise type
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.jobAdsService.findOne(id);

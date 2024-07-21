@@ -1,4 +1,4 @@
-import { jobAdsSelector } from "./job-ads.selector";
+import { jobAdsSelector } from './job-ads.selector';
 
 export const savedJobAdsSelector = () => {
     return {
@@ -10,6 +10,6 @@ export const savedJobAdsSelector = () => {
             jobAds: {
                 select: jobAdsSelector(),
             },
-        }
+        },
     };
-}
+};

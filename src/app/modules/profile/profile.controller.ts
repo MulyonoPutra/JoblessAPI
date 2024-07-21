@@ -58,6 +58,7 @@ export class ProfileController {
         return this.profileService.update(userId, body);
     }
 
+    // TODO: Create Promise type
     @UploadAvatarDecorator()
     async upload(
         @CurrentUserId() userId: string,
@@ -66,6 +67,7 @@ export class ProfileController {
         return await this.profileService.uploadAvatar(userId, file);
     }
 
+    // TODO: Create Promise type
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard)
     @UsePipes(ValidationPipe)

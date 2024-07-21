@@ -8,3 +8,4 @@ export * from './license.selector';
 export * from './job-ads.selector';
 export * from './saved-jobs.selector';
 export * from './application.selector';
+export * from './company.selector';

@@ -1,4 +1,4 @@
-export interface CreateExperienceDto {
+export type ExperienceResponseType = {
     seekerId: string;
     startDate: string;
     endDate: string;
@@ -6,4 +6,7 @@ export interface CreateExperienceDto {
     position: string;
     companyName: string;
     responsibilities: string;
-}
+
+    createdAt?: Date;
+    updatedAt?: Date;
+};

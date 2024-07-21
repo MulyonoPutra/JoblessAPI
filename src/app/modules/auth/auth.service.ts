@@ -29,17 +29,23 @@ export class AuthService {
                     role,
                 },
             })
-            .catch((error) => {
-                if (error instanceof PrismaClientKnownRequestError) {
-                    if (error.code === 'P2002') {
-                        throw new ForbiddenException('Credentials incorrect');
-                    }
-                }
-                throw error;
-            });
 
-        const tokens: Credentials = await this.utils.getToken(user.id, user.email, user.role);
-        await this.utils.updateHashRefreshToken(user.id, tokens.refreshToken);
+        await this.prismaService.seeker.create({
+            data: {
+                user: {
+                    connect: { id: user.id },
+                },
+            },
+        })
+
+        .catch((error) => {
+            if (error instanceof PrismaClientKnownRequestError) {
+                if (error.code === 'P2002') {
+                    throw new ForbiddenException('Credentials incorrect');
+                }
+            }
+            throw error;
+        });
 
         return data;
     }

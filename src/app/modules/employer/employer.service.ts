@@ -1,6 +1,7 @@
 import * as cloudinary from 'cloudinary';
 
 import {
+    BadRequestException,
     ConflictException,
     HttpException,
     HttpStatus,
@@ -9,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { educationSelector, experienceSelector } from 'src/app/common/selectors';
 
+import { CompanyResponseType } from './types/company.response-type';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { CreateEmployerDto } from './dto/create-employer.dto';
@@ -39,14 +41,14 @@ export class EmployerService {
 
         createEmployerDto.userId = userId;
         createEmployerDto.accountNumber = generateCustomId();
-        return await this.prismaService.employer.create({
+        return this.prismaService.employer.create({
             data: createEmployerDto,
         });
     }
 
     // TODO: Create Promise type
     async findAll() {
-        return await this.prismaService.employer.findMany({
+        return this.prismaService.employer.findMany({
             select: {
                 id: true,
                 company: true,
@@ -61,7 +63,7 @@ export class EmployerService {
                         workType: true,
                         payType: true,
                         createdAt: true,
-                        applications: {
+                        application: {
                             select: {
                                 id: true,
                                 date: true,
@@ -151,7 +153,7 @@ export class EmployerService {
                         workType: true,
                         payType: true,
                         createdAt: true,
-                        applications: {
+                        application: {
                             select: {
                                 id: true,
                                 date: true,
@@ -197,7 +199,7 @@ export class EmployerService {
 
         // Additional check for null jobSeeker
         employer.jobAds.forEach((jobAd) => {
-            jobAd.applications.forEach((application) => {
+            jobAd.application.forEach((application) => {
                 if (!application.seeker) {
                     throw new NotFoundException('Job Seeker is not found!');
                 }
@@ -207,23 +209,67 @@ export class EmployerService {
         return employer;
     }
 
-    // TODO: Create Promise type
-    async update(id: string, updateEmployerDto: UpdateEmployerDto) {
-        return await this.prismaService.employer.update({
+    async update(id: string, updateEmployerDto: UpdateEmployerDto): Promise<void> {
+        if (!id) {
+            throw new BadRequestException('Employer ID must be provided');
+        }
+
+        const employerRecord = await this.prismaService.employer.findUnique({
+            where: { id },
+        });
+
+        if (!employerRecord) {
+            throw new NotFoundException(`Employer record with ID '${id}' not found`);
+        }
+
+        await this.prismaService.employer.update({
             data: updateEmployerDto,
             where: { id },
         });
     }
 
-    // TODO: Create Promise type
-    async removeJobAds(id: string) {
-        return await this.prismaService.jobAds.delete({
-            where: { id },
-        });
+    async removeJobAds(id: string): Promise<void> {
+        if (!id) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.BAD_REQUEST,
+                    error: 'Job Ads ID is required!',
+                },
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
+        try {
+            await this.prismaService.jobAds.delete({
+                where: { id },
+            });
+        } catch (error) {
+            if (error.code === 'P2025') {
+                throw new HttpException(
+                    {
+                        status: HttpStatus.NOT_FOUND,
+                        error: `Job Ads with ID ${id} not found`,
+                    },
+                    HttpStatus.NOT_FOUND,
+                );
+            } else {
+                throw new HttpException(
+                    {
+                        status: HttpStatus.INTERNAL_SERVER_ERROR,
+                        error: 'Failed to delete Job Ads',
+                    },
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                );
+            }
+        }
     }
 
-    async createJobAds(createJobAds: CreateJobAdsDto): Promise<CreatedJobAdsType> {
-        return await this.prismaService.jobAds.create({
+    async createJobAds(
+        employerId: string,
+        createJobAds: CreateJobAdsDto,
+    ): Promise<CreatedJobAdsType> {
+        createJobAds.employerId = employerId;
+        return this.prismaService.jobAds.create({
             data: createJobAds,
             select: {
                 id: true,
@@ -235,25 +281,38 @@ export class EmployerService {
                 workType: true,
                 payType: true,
                 createdAt: true,
+                updatedAt: true,
             },
         });
     }
 
     // TODO: Create Promise type
     async findAllJobAds() {
-        return await this.prismaService.$queryRaw`SELECT * FROM "jobads"`;
+        return this.prismaService.$queryRaw`SELECT * FROM "jobads"`;
     }
 
-    // TODO: Create Promise type
-    async createCompany(createCompanyDto: CreateCompanyDto) {
-        return await this.prismaService.company.create({
+    async createCompany(
+        id: string,
+        createCompanyDto: CreateCompanyDto,
+    ): Promise<CompanyResponseType> {
+        if (!id) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.BAD_REQUEST,
+                    error: 'Employer ID is required!',
+                },
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+        createCompanyDto.employerId = id;
+        return this.prismaService.company.create({
             data: createCompanyDto,
         });
     }
 
     // TODO: Create Promise type
     async createAddress(createAddressDto: CreateAddressDto) {
-        return await this.prismaService.address.create({
+        return this.prismaService.address.create({
             data: createAddressDto,
         });
     }

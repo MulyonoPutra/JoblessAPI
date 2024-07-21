@@ -8,4 +8,4 @@ export const userPlainSelector = () => {
         birthday: true,
         gender: true,
     };
-}
+};

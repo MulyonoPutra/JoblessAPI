@@ -9,4 +9,4 @@ export const licenseSelector = () => {
             updatedAt: true,
         },
     };
-}
+};

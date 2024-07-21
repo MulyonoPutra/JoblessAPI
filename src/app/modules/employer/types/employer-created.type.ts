@@ -3,4 +3,6 @@ export type EmployerCreatedType = {
     userId: string;
     accountName: string;
     accountNumber: string;
+    createdAt: Date;
+    updatedAt: Date;
 };
