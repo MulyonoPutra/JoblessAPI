@@ -224,6 +224,7 @@ export class EmployerService {
             throw new NotFoundException(`Employer record with ID '${id}' not found`);
         }
 
+        updateEmployerDto.accountNumber = generateCustomId();
         await this.prismaService.employer.update({
             data: updateEmployerDto,
             where: { id },
@@ -298,6 +299,29 @@ export class EmployerService {
             data: {
                 status: updateJobAdStatusDto.status,
             },
+        });
+    }
+
+    async findJobAdsByStatus(employerId: string, status: string) {
+        return this.prismaService.jobAds.findMany({
+            where: {
+                id: employerId,
+                status: status
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                requirements: true,
+                salary: true,
+                location: true,
+                workType: true,
+                payType: true,
+                status: true,
+                employer: true,
+                createdAt: true,
+                updatedAt: true
+            }
         });
     }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile } from '@nestjs/common';
 import { CurrentUserId, EmployerDecorator, UploadFileDecorator, UploadLogoDecorator } from 'src/app/common/decorators';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -63,9 +63,16 @@ export class EmployerController {
         return this.employerService.createJobAds(employerId, createJobAdsDto);
     }
 
+    @EmployerDecorator()
     @Patch('job-ads/:id/status')
     updateJobAdStatus(@Param('id') id: string, @Body() updateJobAdStatusDto: UpdateJobAdStatusDto) {
         return this.employerService.updateJobAdStatus(id, updateJobAdStatusDto);
+    }
+
+    // @EmployerDecorator()
+    @Get('job-ads/:id')
+    getJobAdsByStatus(@Param('employerId') employerId: string, @Query('status') status: string) {
+        return this.employerService.findJobAdsByStatus(employerId, status);
     }
 
     @EmployerDecorator()

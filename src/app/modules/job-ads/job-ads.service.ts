@@ -49,7 +49,7 @@ export class JobAdsService {
 
     // TODO: Create Promise type
     private async findAll() {
-        return await this.prismaService.jobAds.findMany({
+        return this.prismaService.jobAds.findMany({
             select: {
                 id: true,
                 title: true,
@@ -71,7 +71,7 @@ export class JobAdsService {
 
     // TODO: Create Promise type
     async findOne(id: string) {
-        return await this.prismaService.jobAds.findFirst({
+        return this.prismaService.jobAds.findFirst({
             where: {
                 id,
             },

@@ -12,7 +12,7 @@ export class CompanyService {
         if (query) {
             return this.search(query);
         } else {
-            return await this.findAll();
+            return this.findAll();
         }
     }
 
@@ -92,7 +92,7 @@ export class CompanyService {
 
     // TODO: Create Promise type
     async findOne(id: string) {
-        return await this.prismaService.company.findFirst({
+        return this.prismaService.company.findFirst({
             where: {
                 id,
             },
