@@ -83,6 +83,13 @@ export class ProfileService {
                     role: true,
                     createdAt: true,
                     seeker: seekerSelector(),
+                    employer: {
+                        select: {
+                            id: true,
+                            accountName: true,
+                            accountNumber: true
+                        }
+                    }
                 },
             });
         } else {

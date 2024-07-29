@@ -38,6 +38,14 @@ export class AuthService {
             },
         })
 
+        await this.prismaService.employer.create({
+            data: {
+                user: {
+                    connect: { id: user.id },
+                },
+            },
+        })
+
         .catch((error) => {
             if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code === 'P2002') {

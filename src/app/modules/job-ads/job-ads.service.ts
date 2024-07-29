@@ -35,6 +35,7 @@ export class JobAdsService {
                 requirements: true,
                 salary: true,
                 createdAt: true,
+                status: true,
                 employer: {
                     select: {
                         id: true,
@@ -56,6 +57,7 @@ export class JobAdsService {
                 requirements: true,
                 salary: true,
                 createdAt: true,
+                status: true,
                 employer: {
                     select: {
                         id: true,
@@ -80,6 +82,7 @@ export class JobAdsService {
                 requirements: true,
                 salary: true,
                 createdAt: true,
+                status: true,
                 employer: {
                     select: {
                         id: true,

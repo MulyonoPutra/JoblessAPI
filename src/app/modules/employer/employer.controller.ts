@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile } from '@nestjs/common';
-import { CurrentUserId, EmployerDecorator, UploadLogoDecorator } from 'src/app/common/decorators';
+import { CurrentUserId, EmployerDecorator, UploadFileDecorator, UploadLogoDecorator } from 'src/app/common/decorators';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { CreateEmployerDto } from './dto/create-employer.dto';
@@ -9,6 +9,8 @@ import { EmployerService } from './employer.service';
 import { EmployerCreatedType } from './types/employer-created.type';
 import { CompanyResponseType } from './types/company.response-type';
 import { CreatedJobAdsType } from './types/created-job-ads.type';
+import { UpdateJobAdStatusDto } from './dto/update-job-ads.dto';
+import { UploadImageDecorator } from 'src/app/common/decorators/upload-image.decorator';
 
 @Controller('employer')
 export class EmployerController {
@@ -61,6 +63,11 @@ export class EmployerController {
         return this.employerService.createJobAds(employerId, createJobAdsDto);
     }
 
+    @Patch('job-ads/:id/status')
+    updateJobAdStatus(@Param('id') id: string, @Body() updateJobAdStatusDto: UpdateJobAdStatusDto) {
+        return this.employerService.updateJobAdStatus(id, updateJobAdStatusDto);
+    }
+
     @EmployerDecorator()
     @Post('company/:id')
     createCompany(
@@ -73,14 +80,21 @@ export class EmployerController {
     // TODO: Create Promise type
     @EmployerDecorator()
     @Post('address')
-    createAddress(@Body() createAddressDto: CreateAddressDto) {
-        return this.employerService.createAddress(createAddressDto);
+    createAddress(
+        @Param('id') companyId: string,
+        @Body() createAddressDto: CreateAddressDto) {
+        return this.employerService.createAddress(companyId, createAddressDto);
     }
 
     // TODO: Create Promise type
-    @UploadLogoDecorator()
+    @UploadImageDecorator('logo')
     async upload(@Param('id') companyId: string, @UploadedFile() file: Express.Multer.File) {
         return await this.employerService.uploadLogo(companyId, file);
+    }
+
+    @UploadImageDecorator('header')
+    async uploadHeader(@Param('id') companyId: string, @UploadedFile() file: Express.Multer.File) {
+        return await this.employerService.uploadHeader(companyId, file);
     }
 
     // TODO: Create Promise type

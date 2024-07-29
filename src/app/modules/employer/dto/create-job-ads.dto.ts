@@ -7,4 +7,5 @@ export class CreateJobAdsDto {
     workType: string;
     payType: string;
     location: string;
+    status?: string;
 }

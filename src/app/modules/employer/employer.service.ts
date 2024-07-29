@@ -19,6 +19,7 @@ import { CreatedJobAdsType } from './types/created-job-ads.type';
 import { EmployerCreatedType } from './types/employer-created.type';
 import { PrismaService } from 'src/app/prisma/prisma.service';
 import { UpdateEmployerDto } from './dto/update-employer.dto';
+import { UpdateJobAdStatusDto } from './dto/update-job-ads.dto';
 import { generateCustomId } from 'src/app/common/utility/generator-id';
 
 @Injectable()
@@ -153,6 +154,7 @@ export class EmployerService {
                         workType: true,
                         payType: true,
                         createdAt: true,
+                        status: true,
                         application: {
                             select: {
                                 id: true,
@@ -270,7 +272,10 @@ export class EmployerService {
     ): Promise<CreatedJobAdsType> {
         createJobAds.employerId = employerId;
         return this.prismaService.jobAds.create({
-            data: createJobAds,
+            data: {
+                ...createJobAds,
+                status: 'open'
+            },
             select: {
                 id: true,
                 title: true,
@@ -282,6 +287,16 @@ export class EmployerService {
                 payType: true,
                 createdAt: true,
                 updatedAt: true,
+                status: true
+            },
+        });
+    }
+
+    async updateJobAdStatus(jobAdId: string, updateJobAdStatusDto: UpdateJobAdStatusDto) {
+        return this.prismaService.jobAds.update({
+            where: { id: jobAdId },
+            data: {
+                status: updateJobAdStatusDto.status,
             },
         });
     }
@@ -311,7 +326,18 @@ export class EmployerService {
     }
 
     // TODO: Create Promise type
-    async createAddress(createAddressDto: CreateAddressDto) {
+    async createAddress(id: string, createAddressDto: CreateAddressDto) {
+        if (!id) {
+            throw new HttpException(
+                {
+                    status: HttpStatus.BAD_REQUEST,
+                    error: 'Company ID is required!',
+                },
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
+        createAddressDto.companyId = id;
         return this.prismaService.address.create({
             data: createAddressDto,
         });
@@ -319,6 +345,10 @@ export class EmployerService {
 
     // TODO: Create Promise type
     async uploadLogo(id: string, file: Express.Multer.File) {
+        if (!id) {
+            throw new HttpException('Company ID is required', HttpStatus.BAD_REQUEST);
+        }
+        
         const result = await cloudinary.v2.uploader.upload(file.path, {
             folder: 'nest',
         });
@@ -349,4 +379,35 @@ export class EmployerService {
 
         throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
+
+    async uploadHeader(id: string, file: Express.Multer.File) {
+        if (!id) {
+            throw new HttpException('Company ID is required', HttpStatus.BAD_REQUEST);
+        }
+        const result = await cloudinary.v2.uploader.upload(file.path, {
+            folder: 'nest/header',
+        });
+        const header = result.secure_url;
+
+        const company = await this.prismaService.company.findFirst({
+            where: { id },
+        });
+
+        if (company) {
+            const updated = await this.prismaService.company.update({
+                data: { header },
+                where: { id },
+            });
+
+            if (updated) {
+                return {
+                    statusCode: 200,
+                    message: 'Header uploaded successfully!',
+                };
+            }
+        }
+
+        throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
+
 }
