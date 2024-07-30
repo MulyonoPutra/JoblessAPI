@@ -86,7 +86,7 @@ export class EmployerController {
 
     // TODO: Create Promise type
     @EmployerDecorator()
-    @Post('address')
+    @Post('address/:id')
     createAddress(
         @Param('id') companyId: string,
         @Body() createAddressDto: CreateAddressDto) {
