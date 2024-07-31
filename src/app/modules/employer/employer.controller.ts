@@ -71,7 +71,7 @@ export class EmployerController {
 
     @EmployerDecorator()
     @Get('job-ads/:id')
-    findJobAdsByStatus(@Query('employerId') employerId: string, @Query('status') status: string) {
+    findJobAdsByStatus(@Query('id') employerId: string, @Query('status') status: string) {
         return this.employerService.findJobAdsByStatus(employerId, status);
     }
 
@@ -115,5 +115,17 @@ export class EmployerController {
     @Get('job-ads')
     findAllJobAds() {
         return this.employerService.findAllJobAds();
+    }
+
+    @EmployerDecorator()
+    @Get('job-ads/application/:id')
+    async findAppByJobAdsId(@Param('id') jobAdsId: string) {
+        return this.employerService.findAppByJobAdsId(jobAdsId)
+    }
+
+    @EmployerDecorator()
+    @Get('applications/:id')
+    async findApplicationsByEmployer(@Param('id') employerId: string) {
+        return this.employerService.findApplicationsByEmployerId(employerId);
     }
 }

@@ -303,8 +303,6 @@ export class EmployerService {
     }
 
     async findJobAdsByStatus(employerId: string, status: string) {
-        console.log('Employer ID:', employerId);
-        console.log('Status:', status);
         return this.prismaService.jobAds.findMany({
             where: {
                 employerId: employerId,
@@ -334,6 +332,45 @@ export class EmployerService {
             WHERE "employerId" = ${employerId}
               AND status = ${status}
         `;
+    }
+
+    async findAppByJobAdsId(jobAdsId: string){
+        // return this.prismaService.$queryRaw`SELECT * FROM application WHERE jobAdsId = ${jobAdsId}`;
+        return this.prismaService.application.findMany({
+            where: { jobAdsId },
+            select: {
+                id: true,
+                date: true,
+                status: true,
+                jobAds: true,
+                createdAt: true,
+                seeker: {
+                    select: {
+                        id: true,
+                        summary: true,
+                        education: true,
+                        experience: true,
+                        skills: true,
+                        resume: true,
+                        coverLetter: true,
+                        links: true,
+                        desireSalary: true,
+                        startDate: true,
+                        license: true,
+
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                                avatar: true,
+                                phone: true,
+                            },
+                        },
+                    }
+                }
+            }
+        })
     }
 
     // TODO: Create Promise type
@@ -443,6 +480,63 @@ export class EmployerService {
         }
 
         throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    }
+
+    async findApplicationsByEmployerId(employerId: string) {
+        return this.prismaService.application.findMany({
+            where: {
+                jobAds: {
+                    employerId,
+                },
+            },
+            include: {
+                seeker: {
+                    select: {
+                        id: true,
+                        summary: true,
+                        education: true,
+                        experience: true,
+                        skills: true,
+                        resume: true,
+                        coverLetter: true,
+                        links: true,
+                        desireSalary: true,
+                        startDate: true,
+                        license: true,
+
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                                avatar: true,
+                                phone: true,
+                            },
+                        },
+                    }
+                },
+                jobAds: {
+                    include: {
+                        employer: {
+                            select: {
+                                id: true,
+                                accountName: true,
+                                accountNumber: true,
+                                user: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        email: true,
+                                        avatar: true,
+                                        phone: true,
+                                    },
+                                },
+                            }
+                        },
+                    },
+                },
+            },
+        });
     }
 
 }
