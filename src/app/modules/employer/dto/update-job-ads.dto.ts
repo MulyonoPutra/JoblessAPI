@@ -5,5 +5,4 @@ export class UpdateJobAdStatusDto {
     @IsString()
     @IsIn(['open', 'expired', 'closed'])
     status: string;
-
 }

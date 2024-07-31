@@ -1,4 +1,4 @@
-import { companySelector } from "./company.selector";
+import { companySelector } from './company.selector';
 
 export const applicationSelector = () => {
     return {

@@ -87,9 +87,9 @@ export class ProfileService {
                         select: {
                             id: true,
                             accountName: true,
-                            accountNumber: true
-                        }
-                    }
+                            accountNumber: true,
+                        },
+                    },
                 },
             });
         } else {

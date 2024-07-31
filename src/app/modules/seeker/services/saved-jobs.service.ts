@@ -70,8 +70,8 @@ export class SavedJobsService {
                         employer: {
                             select: {
                                 id: true,
-                                company: companySelector()
-                            }
+                                company: companySelector(),
+                            },
                         },
                     },
                 },

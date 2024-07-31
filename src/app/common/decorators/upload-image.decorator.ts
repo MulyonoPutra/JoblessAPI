@@ -1,8 +1,8 @@
-import { Post, UseGuards, UseInterceptors, applyDecorators } from "@nestjs/common";
+import { Post, UseGuards, UseInterceptors, applyDecorators } from '@nestjs/common';
 
-import { AuthenticationGuard } from "../guards/authentication.guard";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
+import { AuthenticationGuard } from '../guards/authentication.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 export function UploadImageDecorator(fieldName: string) {
     return applyDecorators(

@@ -20,15 +20,14 @@ export class AuthService {
 
     async register(data: RegisterDTO, role: string): Promise<RegisterResponseType> {
         const password = await hash(data.password, 12);
-        const user = await this.prismaService.user
-            .create({
-                data: {
-                    name: data.name,
-                    email: data.email,
-                    password,
-                    role,
-                },
-            })
+        const user = await this.prismaService.user.create({
+            data: {
+                name: data.name,
+                email: data.email,
+                password,
+                role,
+            },
+        });
 
         await this.prismaService.seeker.create({
             data: {
@@ -36,24 +35,25 @@ export class AuthService {
                     connect: { id: user.id },
                 },
             },
-        })
-
-        await this.prismaService.employer.create({
-            data: {
-                user: {
-                    connect: { id: user.id },
-                },
-            },
-        })
-
-        .catch((error) => {
-            if (error instanceof PrismaClientKnownRequestError) {
-                if (error.code === 'P2002') {
-                    throw new ForbiddenException('Credentials incorrect');
-                }
-            }
-            throw error;
         });
+
+        await this.prismaService.employer
+            .create({
+                data: {
+                    user: {
+                        connect: { id: user.id },
+                    },
+                },
+            })
+
+            .catch((error) => {
+                if (error instanceof PrismaClientKnownRequestError) {
+                    if (error.code === 'P2002') {
+                        throw new ForbiddenException('Credentials incorrect');
+                    }
+                }
+                throw error;
+            });
 
         return data;
     }

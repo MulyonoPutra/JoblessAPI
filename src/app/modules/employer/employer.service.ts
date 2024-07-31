@@ -275,7 +275,7 @@ export class EmployerService {
         return this.prismaService.jobAds.create({
             data: {
                 ...createJobAds,
-                status: 'open'
+                status: 'open',
             },
             select: {
                 id: true,
@@ -288,7 +288,7 @@ export class EmployerService {
                 payType: true,
                 createdAt: true,
                 updatedAt: true,
-                status: true
+                status: true,
             },
         });
     }
@@ -306,7 +306,7 @@ export class EmployerService {
         return this.prismaService.jobAds.findMany({
             where: {
                 employerId: employerId,
-                status: status
+                status: status,
             },
             select: {
                 id: true,
@@ -320,8 +320,8 @@ export class EmployerService {
                 status: true,
                 employer: true,
                 createdAt: true,
-                updatedAt: true
-            }
+                updatedAt: true,
+            },
         });
     }
 
@@ -334,7 +334,7 @@ export class EmployerService {
         `;
     }
 
-    async findAppByJobAdsId(jobAdsId: string){
+    async findAppByJobAdsId(jobAdsId: string) {
         // return this.prismaService.$queryRaw`SELECT * FROM application WHERE jobAdsId = ${jobAdsId}`;
         return this.prismaService.application.findMany({
             where: { jobAdsId },
@@ -367,10 +367,10 @@ export class EmployerService {
                                 phone: true,
                             },
                         },
-                    }
-                }
-            }
-        })
+                    },
+                },
+            },
+        });
     }
 
     // TODO: Create Promise type
@@ -420,7 +420,7 @@ export class EmployerService {
         if (!id) {
             throw new HttpException('Company ID is required', HttpStatus.BAD_REQUEST);
         }
-        
+
         const result = await cloudinary.v2.uploader.upload(file.path, {
             folder: 'nest',
         });
@@ -513,7 +513,7 @@ export class EmployerService {
                                 phone: true,
                             },
                         },
-                    }
+                    },
                 },
                 jobAds: {
                     include: {
@@ -531,12 +531,11 @@ export class EmployerService {
                                         phone: true,
                                     },
                                 },
-                            }
+                            },
                         },
                     },
                 },
             },
         });
     }
-
 }

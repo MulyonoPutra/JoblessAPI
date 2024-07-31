@@ -177,7 +177,9 @@ export class SeekerController {
     @HttpCode(HttpStatus.OK)
     @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @Post('application')
-    createApplication(@Body() createApplicationDto: CreateApplicationDto): Promise<CreateApplicationResponseType> {
+    createApplication(
+        @Body() createApplicationDto: CreateApplicationDto,
+    ): Promise<CreateApplicationResponseType> {
         return this.applicationService.createApplication(createApplicationDto);
     }
 

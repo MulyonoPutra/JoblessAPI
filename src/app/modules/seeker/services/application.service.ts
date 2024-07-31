@@ -9,7 +9,9 @@ import { companySelector } from 'src/app/common/selectors';
 export class ApplicationService {
     constructor(private prismaService: PrismaService) {}
 
-    async createApplication(createApplicationDto: CreateApplicationDto): Promise<CreateApplicationResponseType> {
+    async createApplication(
+        createApplicationDto: CreateApplicationDto,
+    ): Promise<CreateApplicationResponseType> {
         // Check if the job ad exists
         await this.onCheckJobAdsId(createApplicationDto);
 

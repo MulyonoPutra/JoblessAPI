@@ -1,5 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile } from '@nestjs/common';
-import { CurrentUserId, EmployerDecorator, UploadFileDecorator, UploadLogoDecorator } from 'src/app/common/decorators';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Query,
+    UploadedFile,
+} from '@nestjs/common';
+import {
+    CurrentUserId,
+    EmployerDecorator,
+    UploadFileDecorator,
+    UploadLogoDecorator,
+} from 'src/app/common/decorators';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { CreateEmployerDto } from './dto/create-employer.dto';
@@ -77,7 +92,10 @@ export class EmployerController {
 
     @EmployerDecorator()
     @Get('job-ads/status')
-    findJobAdStatusByEmployerId(@Query('employerId') employerId: string, @Query('status') status: string) {
+    findJobAdStatusByEmployerId(
+        @Query('employerId') employerId: string,
+        @Query('status') status: string,
+    ) {
         return this.employerService.findJobAdStatusByEmployerId(employerId, status);
     }
 
@@ -93,9 +111,7 @@ export class EmployerController {
     // TODO: Create Promise type
     @EmployerDecorator()
     @Post('address/:id')
-    createAddress(
-        @Param('id') companyId: string,
-        @Body() createAddressDto: CreateAddressDto) {
+    createAddress(@Param('id') companyId: string, @Body() createAddressDto: CreateAddressDto) {
         return this.employerService.createAddress(companyId, createAddressDto);
     }
 
@@ -120,7 +136,7 @@ export class EmployerController {
     @EmployerDecorator()
     @Get('job-ads/application/:id')
     async findAppByJobAdsId(@Param('id') jobAdsId: string) {
-        return this.employerService.findAppByJobAdsId(jobAdsId)
+        return this.employerService.findAppByJobAdsId(jobAdsId);
     }
 
     @EmployerDecorator()
