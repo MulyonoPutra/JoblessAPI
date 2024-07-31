@@ -302,27 +302,13 @@ export class EmployerService {
         });
     }
 
-    async findJobAdsByStatus(employerId: string, status: string) {
-        return this.prismaService.jobAds.findMany({
-            where: {
-                id: employerId,
-                status: status
-            },
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                requirements: true,
-                salary: true,
-                location: true,
-                workType: true,
-                payType: true,
-                status: true,
-                employer: true,
-                createdAt: true,
-                updatedAt: true
-            }
-        });
+    async findJobAdStatusByEmployerId(employerId: string, status: string) {
+        return this.prismaService.$queryRaw`
+            SELECT *
+            FROM jobads
+            WHERE "employerId" = ${employerId}
+              AND status = ${status}
+        `;
     }
 
     // TODO: Create Promise type

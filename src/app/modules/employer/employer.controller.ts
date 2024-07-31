@@ -69,10 +69,10 @@ export class EmployerController {
         return this.employerService.updateJobAdStatus(id, updateJobAdStatusDto);
     }
 
-    // @EmployerDecorator()
-    @Get('job-ads/:id')
-    getJobAdsByStatus(@Param('employerId') employerId: string, @Query('status') status: string) {
-        return this.employerService.findJobAdsByStatus(employerId, status);
+    @EmployerDecorator()
+    @Get('job-ads/status/:id')
+    findJobAdStatusByEmployerId(@Query('employerId') employerId: string, @Query('status') status: string) {
+        return this.employerService.findJobAdStatusByEmployerId(employerId, status);
     }
 
     @EmployerDecorator()
