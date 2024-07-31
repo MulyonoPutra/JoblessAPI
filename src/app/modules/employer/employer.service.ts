@@ -302,6 +302,31 @@ export class EmployerService {
         });
     }
 
+    async findJobAdsByStatus(employerId: string, status: string) {
+        console.log('Employer ID:', employerId);
+        console.log('Status:', status);
+        return this.prismaService.jobAds.findMany({
+            where: {
+                employerId: employerId,
+                status: status
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                requirements: true,
+                salary: true,
+                location: true,
+                workType: true,
+                payType: true,
+                status: true,
+                employer: true,
+                createdAt: true,
+                updatedAt: true
+            }
+        });
+    }
+
     async findJobAdStatusByEmployerId(employerId: string, status: string) {
         return this.prismaService.$queryRaw`
             SELECT *

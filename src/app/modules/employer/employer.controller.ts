@@ -70,7 +70,13 @@ export class EmployerController {
     }
 
     @EmployerDecorator()
-    @Get('job-ads/status/:id')
+    @Get('job-ads/:id')
+    findJobAdsByStatus(@Query('employerId') employerId: string, @Query('status') status: string) {
+        return this.employerService.findJobAdsByStatus(employerId, status);
+    }
+
+    @EmployerDecorator()
+    @Get('job-ads/status')
     findJobAdStatusByEmployerId(@Query('employerId') employerId: string, @Query('status') status: string) {
         return this.employerService.findJobAdStatusByEmployerId(employerId, status);
     }
