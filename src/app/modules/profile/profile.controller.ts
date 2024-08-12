@@ -39,8 +39,9 @@ export class ProfileController {
         return this.profileService.findAll();
     }
 
+    @Roles(Role.SEEKER)
     @HttpCode(HttpStatus.OK)
-    @UseGuards(AuthenticationGuard)
+    @UseGuards(AuthenticationGuard, AuthorizationGuard)
     @UsePipes(ValidationPipe)
     @Get('detail')
     findOne(@CurrentUserId() userId: string): Promise<ProfileResponseType> {

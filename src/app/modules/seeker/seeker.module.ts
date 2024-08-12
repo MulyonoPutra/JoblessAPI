@@ -7,6 +7,7 @@ import { SavedJobsService } from './services/saved-jobs.service';
 import { SeekerController } from './seeker.controller';
 import { SeekerService } from './services/seeker.service';
 import { SkillService } from './services/skill.service';
+import { LicenseService } from './services/license.service';
 
 @Module({
     imports: [PrismaModule],
@@ -18,6 +19,7 @@ import { SkillService } from './services/skill.service';
         SavedJobsService,
         SkillService,
         ApplicationService,
+        LicenseService
     ],
 })
 export class SeekerModule {}

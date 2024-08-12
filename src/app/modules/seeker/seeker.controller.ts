@@ -33,6 +33,8 @@ import { EducationResponseType } from './types/education-response.type';
 import { ExperienceResponseType } from './types/experience.response-type';
 import { SkillsResponseType } from './types/skills.response-type';
 import { CreateApplicationResponseType } from './types/create-application.response-type';
+import { CreateLicenseDto } from './dto/create-license.dto';
+import { LicenseService } from './services/license.service';
 
 @Controller('seeker')
 export class SeekerController {
@@ -43,6 +45,7 @@ export class SeekerController {
         private readonly savedJobsService: SavedJobsService,
         private readonly skillService: SkillService,
         private readonly applicationService: ApplicationService,
+        private readonly licenseService: LicenseService
     ) {}
 
     // TODO: Create Promise type
@@ -252,5 +255,29 @@ export class SeekerController {
     @UploadFileDecorator()
     uploadResume(@CurrentUserId() userId: string, @UploadedFile() file: Express.Multer.File) {
         return this.seekerService.uploadResume(userId, file);
+    }
+
+    @Roles(Role.SEEKER)
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthenticationGuard, AuthorizationGuard)
+    @Post('license/:id')
+    createLicense(@Param('id') seekerId: string, @Body() createLicenseDto: CreateLicenseDto[]){
+        return this.licenseService.createLicense(seekerId, createLicenseDto)
+    }
+
+    @Roles(Role.SEEKER)
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthenticationGuard, AuthorizationGuard)
+    @Get('license/:id')
+    findLicenseById(@Param('id') id: string) {
+        return this.licenseService.findLicenseById(id);
+    }
+
+    @Roles(Role.SEEKER)
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AuthenticationGuard, AuthorizationGuard)
+    @Delete('license/:id')
+    removeLicenseById(@Param('id') id: string): Promise<void> {
+        return this.licenseService.removeLicense(id);
     }
 }
